@@ -1,0 +1,64 @@
+CommonBundle\Entity\SayLoveMessage:
+    type: entity
+    table: weapp_say_love_message
+    repositoryClass: CommonBundle\Repository\SayLoveMessageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        selfName:
+            type: string
+            options:
+                comment: 自己名字
+        selfNickname:
+            type: string
+            options:
+                comment: 自己暱稱
+        selfGender:
+            type: string
+            nullable: true
+            options:
+                comment: 自己性別
+        sheName:
+            type: string
+            options:
+                comment: 對方名字
+        sheGender:
+            type: string
+            options:
+                comment: 對方性別
+        content:
+            type: text
+        likeNum:
+            type: integer
+        guess:
+            type: integer
+            options:
+                comment: 猜總數
+        guessRight:
+            type: integer
+            options:
+                comment: 猜中總數
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        Profile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+                onDelete: SET NULL
+    oneToMany:
+        SayLoveMessageComment:
+            targetEntity: CommonBundle\Entity\SayLoveMessageComment
+            mappedBy: SayLoveMessage

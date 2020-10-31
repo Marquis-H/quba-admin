@@ -1,0 +1,76 @@
+CommonBundle\Entity\IdleApplication:
+    type: entity
+    table: weapp_idle_application
+    repositoryClass: CommonBundle\Repository\IdleApplicationRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        description:
+            type: text
+        status:
+            type: string
+        oldDeep:
+            type: integer
+            options:
+                default: 0
+                comment: 新旧程度
+        number:
+            type: integer
+            options:
+                default: 1
+        originalCost:
+            type: float
+            options:
+                comment: 原价
+        currentCost:
+            type: float
+            options:
+                comment: 现价
+        contactType:
+            type: string
+        contact:
+            type: string
+        originalUrl:
+            type: string
+            nullable: true
+            options:
+                comment: 购买链接
+        remark:
+            type: text
+            nullable: true
+        famousPhoto:
+            type: string
+            options:
+                comment: 封面图
+        photos:
+            type: array
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        IdleCategory:
+            targetEntity: CommonBundle\Entity\IdleCategory
+            inversedBy: IdleApplication
+            joinColumn:
+                name: weapp_idle_category
+                referencedColumnName: id
+                onDelete: SET NULL
+        Profile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            inversedBy: IdleApplication
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+                onDelete: SET NULL

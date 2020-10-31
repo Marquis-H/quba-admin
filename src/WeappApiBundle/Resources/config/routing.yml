@@ -1,0 +1,34 @@
+api.security:
+    prefix: /security
+    type: annotation
+    resource: "@WeappApiBundle/Controller/SecurityController.php"
+
+api.weapp_user:
+    prefix: /weapp_user
+    type: annotation
+    resource: "@WeappApiBundle/Controller/WeappUserController.php"
+
+api.weapp_web:
+    prefix: /web
+    type: annotation
+    resource: "@WeappApiBundle/Controller/WebController.php"
+
+api.weapp_common:
+    prefix: /common
+    type: annotation
+    resource: "@WeappApiBundle/Controller/CommonController.php"
+
+api.weapp_upload: # 文件上传
+    prefix: /upload
+    type: annotation
+    resource: "@WeappApiBundle/Controller/UploadController.php"
+
+api.weapp_idle: # 二手闲置
+    prefix: /idle
+    type: annotation
+    resource: "@WeappApiBundle/Controller/IdleController.php"
+
+api.weapp_love:
+    prefix: /love
+    type: annotation
+    resource: "@WeappApiBundle/Controller/LoveController.php"

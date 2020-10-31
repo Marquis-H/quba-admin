@@ -1,0 +1,80 @@
+CommonBundle\Entity\MatchApplication:
+    type: entity
+    table: weapp_match_application
+    repositoryClass: CommonBundle\Repository\MatchApplicationRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        currentStatus:
+            type: text
+            options:
+                comment: 现状
+        skill:
+            type: text
+            options:
+                comment: 技能要求
+        experience:
+            type: text
+            options:
+                comment: 经验要求
+        people:
+            type: integer
+            options:
+                comment: 人数
+                default: 0
+        totalPeople:
+            type: integer
+            options:
+                comment: 总人数
+                default: 0
+        joinEndAt:
+            type: datetime
+            options:
+                comment: 加入队伍截止时间
+        extra:
+            type: text
+            nullable: true
+        isSponsor:
+            type: boolean
+            options:
+                comment: 是否发起人
+        skills:
+            type: array
+            options:
+                comment: 技能
+        matchExperience:
+            type: text
+            options:
+                comment: 比赛经验
+        contact:
+            type: text
+            options:
+                comment: 联系方式
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        MatchInfo:
+            targetEntity: CommonBundle\Entity\MatchInfo
+            inversedBy: MatchApplication
+            joinColumn:
+                name: weapp_match_info_id
+                referencedColumnName: id
+                onDelete: SET NULL
+        Profile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            inversedBy: MatchApplication
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+                onDelete: SET NULL

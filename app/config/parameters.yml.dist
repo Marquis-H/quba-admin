@@ -1,0 +1,44 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: symfony
+    database_user: root
+    database_password: ~
+    # You should uncomment this if you want to use pdo_sqlite
+    #database_path: '%kernel.project_dir%/var/data/data.sqlite'
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    redis_host:        127.0.0.1
+    redis_port:        6379
+    redis_password:    ~
+    project_prefix:    dev_project_
+
+    JWT_PRIVATE_KEY_PATH: var/jwt/private.pem
+    JWT_PUBLIC_KEY_PATH: var/jwt/public.pem
+    JWT_PASSPHRASE: weapp-cwd-vote
+
+    app_id: ~
+    app_secret: ~
+
+    api_domain_allow: ~
+    api_domain: ~
+
+    qiniu: ~
+    qiniu_access_key: ~
+    qiniu_secret_key: ~
+    qiniu_bucket: ~
+    qiniu_domain: ~
+    is_dev_mode: false
+
+    SUBMAIL_APPID: ~
+    SUBMAIL_APPKEY: ~
