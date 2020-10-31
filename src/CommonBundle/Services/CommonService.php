@@ -50,7 +50,7 @@ class CommonService extends AbstractService
                     break;
                 case $obj instanceof WeappUserProfile:
                     $output = [
-                        'id' => $obj->getId(),
+                        'pid' => $obj->getId(),
                         'college' => $obj->getCollege() ? $obj->getCollege()->getId() : null,
                         'professional' => $obj->getProfessional() ? $obj->getProfessional()->getId() : null,
                         'name' => $obj->getName(),

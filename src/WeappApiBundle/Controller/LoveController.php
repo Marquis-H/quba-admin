@@ -29,10 +29,16 @@ class LoveController extends AbstractApiController
      */
     public function loveList(Request $request)
     {
+        $accessor = PropertyAccess::createPropertyAccessor();
         $params = $request->query->all(); // profile id
+        /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
         $common = $this->get(CommonService::class);
-        $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy([], ["createdAt" => 'desc']);
+        if ($id = $accessor->getValue($params, '[id]')) {
+            $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy(['Profile' => $id], ["createdAt" => 'desc']);
+        } else {
+            $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy([], ["createdAt" => 'desc']);
+        }
 
         return $this->createSuccessJSONResponse('success', $common->toDataModel($sayLoves));
     }
@@ -139,13 +145,14 @@ class LoveController extends AbstractApiController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function comment(Request $request){
+    public function comment(Request $request)
+    {
         $params = $request->query->all();
         $common = $this->get(CommonService::class);
 
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
-        if($request->getMethod() == 'POST'){
+        if ($request->getMethod() == 'POST') {
             $params = $request->request->all();
             CommonTools::checkParams($params, ['id', 'comment']);
             $sayMessage = $em->getRepository('CommonBundle:SayLoveMessage')->find($params['id']);
