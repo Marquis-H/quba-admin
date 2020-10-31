@@ -51,9 +51,9 @@ class LoveController extends AbstractApiController
         $user = $this->getUser();
         $profile = $user->getWeappUserProfile();
 
-        if (!$profile) {
-            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
-        }
+//        if (!$profile) {
+//            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+//        }
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();
         CommonTools::checkParams($params, ['nickname', 'name', 'taName', 'content']);
@@ -141,7 +141,6 @@ class LoveController extends AbstractApiController
      */
     public function comment(Request $request){
         $params = $request->query->all();
-//        CommonTools::checkParams($params, ['id']);
         $common = $this->get(CommonService::class);
 
         /** @var EntityManager $em */

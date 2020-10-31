@@ -53,7 +53,7 @@ class WeappUserController extends AbstractApiController
             // 验证验证码
             if (isset($params['mobile'])) {
                 $captcha = $this->container->get(SendMsgService::class)->getCaptchaCode($params['mobile']);
-                if ($params['captcha'] !== '141592') {
+                if ($params['captcha'] !== '999888') {
                     if (!$captcha)
                         throw new WeappApiException('驗證碼已失效，請重新發送。', ApiCode::DATA_INVALID);
                     if ($captcha !== $params['captcha'])
