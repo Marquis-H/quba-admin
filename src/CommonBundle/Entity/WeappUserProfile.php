@@ -254,8 +254,7 @@ class WeappUserProfile
     {
         return $this->Professional;
     }
-<<<<<<< HEAD
-=======
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -346,5 +345,4 @@ class WeappUserProfile
     {
         return $this->MatchApplication;
     }
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
 }

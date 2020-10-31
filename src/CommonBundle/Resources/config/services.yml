@@ -68,11 +68,8 @@ services:
 
     CommonBundle\Services\PageService:
         arguments: [ "@service_container" ]
-<<<<<<< HEAD
-=======
 
     CommonBundle\Services\SMSService:
         arguments:
             - '%SUBMAIL_APPID%'
             - '%SUBMAIL_APPKEY%'
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637

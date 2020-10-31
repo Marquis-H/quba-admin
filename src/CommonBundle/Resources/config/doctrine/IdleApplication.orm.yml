@@ -69,10 +69,7 @@ CommonBundle\Entity\IdleApplication:
                 onDelete: SET NULL
         Profile:
             targetEntity: CommonBundle\Entity\WeappUserProfile
-<<<<<<< HEAD
-=======
             inversedBy: IdleApplication
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
             joinColumn:
                 name: profile_id
                 referencedColumnName: id
