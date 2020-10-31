@@ -36,10 +36,7 @@
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
         "snc/redis-bundle": "^2.1.4",
-<<<<<<< HEAD
-=======
         "submail/submail-php": "^2.3@dev",
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
         "symfony/assetic-bundle": "^2.8.2",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",

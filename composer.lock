@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "c53bb0a9c1ca448d7f525a92c5a02831",
-=======
     "content-hash": "8a8f33048e484bbd942a39d11920f1c4",
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3728,10 +3724,7 @@
                 "configuration",
                 "distribution"
             ],
-<<<<<<< HEAD
-=======
             "abandoned": true,
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
             "time": "2019-06-18T15:43:58+00:00"
         },
         {
@@ -3922,8 +3915,6 @@
             "time": "2019-12-09T12:56:15+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "submail/submail-php",
             "version": "dev-master",
             "source": {
@@ -3969,7 +3960,6 @@
             "time": "2020-03-29T16:47:51+00:00"
         },
         {
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.12",
             "source": {
@@ -5936,12 +5926,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-<<<<<<< HEAD
-        "jacklam/php-tools": 20
-=======
         "jacklam/php-tools": 20,
         "submail/submail-php": 20
->>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
     },
     "prefer-stable": true,
     "prefer-lowest": false,
