@@ -1,0 +1,22 @@
+### 表單配置設定 ###
+configs:
+    translation_domain: messages
+
+### 權限角色屬性 ###
+choices:
+    ROLE_ADMIN:
+        label: '管理員'
+    ROLE_USER_MANAGER:
+        label: '管理員用戶'
+    ROLE_REVIEW:
+        label: '评审'
+
+### 權限分配設定 ###
+layout:
+    SYSTEM_ROLE:
+        label: '系統權限'
+        items:
+            - ROLE_SUPER_ADMIN
+            - ROLE_ADMIN
+            - ROLE_USER_MANAGER
+            - ROLE_REVIEW

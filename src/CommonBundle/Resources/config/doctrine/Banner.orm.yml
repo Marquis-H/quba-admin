@@ -1,0 +1,29 @@
+CommonBundle\Entity\Banner:
+    type: entity
+    table: weapp_banner
+    repositoryClass: CommonBundle\Repository\BannerRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        slug:
+            type: string
+        title:
+            type: string
+        url:
+            type: string
+            nullable: true
+        file:
+            type: array
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update

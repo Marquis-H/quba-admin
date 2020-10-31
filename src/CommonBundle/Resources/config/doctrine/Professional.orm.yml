@@ -1,0 +1,33 @@
+CommonBundle\Entity\Professional:
+    type: entity
+    table: weapp_professional
+    repositoryClass: CommonBundle\Repository\ProfessionalRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        description:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        College:
+            targetEntity: CommonBundle\Entity\College
+            inversedBy: College
+            joinColumn:
+                name: weapp_college
+                referencedColumnName: id
+                onDelete: SET NULL

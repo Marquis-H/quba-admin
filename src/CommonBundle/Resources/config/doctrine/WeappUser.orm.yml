@@ -1,0 +1,53 @@
+CommonBundle\Entity\WeappUser:
+    type: entity
+    table: weapp_user
+    uniqueConstraints:
+        user_uni:
+            columns: [open_id]
+    repositoryClass: CommonBundle\Repository\WeappUserRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        openID:
+            type: string
+            nullable: false
+            unique: true
+        username:
+            type: string
+            unique: true
+            length: 100
+        nickname:
+            type: string
+            nullable: true
+        avatar:
+            type: string
+            nullable: true
+        lastLoginAt:
+            type: datetime
+            nullable: true
+        lastLoginIp:
+            type: string
+            nullable: true
+            length: 15
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    oneToOne:
+        WeappUserProfile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: weapp_user_profile
+                referencedColumnName: id
+                onDelete: SET NULL
+    lifecycleCallbacks:
+        prePersist: [ doStuffOnPrePersist ]

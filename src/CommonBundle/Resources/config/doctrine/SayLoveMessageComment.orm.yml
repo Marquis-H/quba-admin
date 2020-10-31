@@ -1,0 +1,25 @@
+CommonBundle\Entity\SayLoveMessageComment:
+    type: entity
+    table: weapp_say_love_message_comment
+    repositoryClass: CommonBundle\Repository\SayLoveMessageCommentRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        comment:
+            type: text
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+    manyToOne:
+        SayLoveMessage:
+            targetEntity: CommonBundle\Entity\SayLoveMessage
+            inversedBy: SayLoveMessageComment
+            joinColumn:
+                name: weapp_say_love_message_id
+                referencedColumnName: id
+                onDelete: CASCADE

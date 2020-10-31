@@ -1,0 +1,4 @@
+services:
+    # service
+    QiniuBundle\Services\CommonService:
+        arguments: [ "@service_container" ]

@@ -1,0 +1,11 @@
+weapp_api:
+    resource: "@WeappApiBundle/Resources/config/routing.yml"
+    prefix:   /api/v1/weapp
+
+admin_api:
+    resource: "@AdminApiBundle/Resources/config/routing.yml"
+    prefix:   /api/v1/admin
+
+### LiipImagine router ###
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"

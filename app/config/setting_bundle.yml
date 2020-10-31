@@ -1,0 +1,84 @@
+imports:
+    - { resource: ../../vendor/knplabs/doctrine-behaviors/config/orm-services.yml }
+
+### Assetic Configuration ###
+assetic:
+    debug: '%kernel.debug%'
+    use_controller: false
+    bundles: ~
+    filters:
+        cssrewrite: ~
+        sass:
+            bin: "/usr/local/bin/sass"
+
+### FOSUserBundle Configuration ###
+fos_user:
+    db_driver: orm
+    firewall_name: admintools
+    user_class: CommonBundle\Entity\FosUser
+    from_email:
+        address: fos@admin.com #"%mailer_user%"
+        sender_name: fos@admin.com #"%mailer_user%"
+
+### KnpMenuBundle Configuration ###
+knp_menu:
+    twig:
+        template: knp_menu.html.twig
+    templating: false
+    default_renderer: twig
+    providers:
+        builder_alias: true    # disable the builder-based provider
+        container_aware: true
+
+### KnpPaginatorBundle Configuration ###
+knp_paginator:
+    page_range: 10
+    default_options:
+        page_name: page
+        sort_field_name: sort
+        sort_direction_name: direction
+        distinct: true
+
+### LiipImagine Configuration ###
+liip_imagine:
+    #    loaders:
+    #        default:
+    #            filesystem:
+    #                data_root:
+    #                    - "%kernel.project_dir%/web"
+    #- "%abs_uploads_path%"
+    resolvers:
+        profile_photos:
+            web_path:
+                web_root: "%kernel.project_dir%/web"
+                cache_prefix: "uploads/cache"
+
+lexik_jwt_authentication:
+    private_key_path: '%kernel.project_dir%/%JWT_PRIVATE_KEY_PATH%'
+    public_key_path:  '%kernel.project_dir%/%JWT_PUBLIC_KEY_PATH%'
+    pass_phrase:      '%JWT_PASSPHRASE%'
+
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        allow_origin: ['*']
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+        allow_headers: ['Content-Type', 'Authorization']
+        expose_headers: ['Link']
+        max_age: 3600
+    paths:
+        '^/api/v1':
+            allow_origin: ['*']
+            allow_headers: ['Content-Type', 'Authorization']
+            allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+            max_age: 3600
+
+knp_snappy:
+    image:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltoimage #"\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\"" for Windows users
+        options:    []
+
+qiniu:
+    access_key: "%qiniu_access_key%"
+    secret_key: "%qiniu_secret_key%"

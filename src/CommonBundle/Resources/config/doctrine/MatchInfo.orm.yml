@@ -1,0 +1,53 @@
+CommonBundle\Entity\MatchInfo:
+    type: entity
+    table: weapp_match_info
+    repositoryClass: CommonBundle\Repository\MatchInfoRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        tabs:
+            type: array
+        endAt:
+            type: datetime
+            nullable: true
+        peopleLimit:
+            type: integer
+            options:
+                comment: 人数限制
+                default: 0
+        qualificationLimit:
+            type: text
+            nullable: true
+            options:
+                comment: 限制条件
+        files:
+            type: array
+        urls:
+            type: string
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        MatchCategory:
+            targetEntity: CommonBundle\Entity\MatchCategory
+            joinColumn:
+                name: weapp_match_category_id
+                referencedColumnName: id
+                onDelete: SET NULL
+    oneToMany:
+        MatchApplication:
+            targetEntity: CommonBundle\Entity\MatchApplication
+            mappedBy: MatchInfo

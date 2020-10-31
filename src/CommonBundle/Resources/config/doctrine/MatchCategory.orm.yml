@@ -1,0 +1,26 @@
+CommonBundle\Entity\MatchCategory:
+    type: entity
+    table: weapp_match_category
+    repositoryClass: CommonBundle\Repository\MatchCategoryRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        isOnline:
+            type: boolean
+        type:
+            type: string
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update

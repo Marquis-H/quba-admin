@@ -1,0 +1,27 @@
+CommonBundle\Entity\Page:
+    type: entity
+    table: weapp_page
+    repositoryClass: CommonBundle\Repository\PageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        slug:
+            type: string
+        title:
+            type: string
+        content:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update

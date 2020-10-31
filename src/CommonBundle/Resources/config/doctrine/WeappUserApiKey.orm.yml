@@ -1,0 +1,28 @@
+CommonBundle\Entity\WeappUserApiKey:
+    type: entity
+    table: weapp_user_api_key
+    repositoryClass: CommonBundle\Repository\WeappUserApiKeyRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        apiKey:
+            type: string
+            unique: true
+        lastRequestedAt:
+            type: datetime
+            nullable: true
+        lastRequestedIp:
+            type: string
+            nullable: true
+            length: 15
+    manyToOne:
+        WeappUser:
+            targetEntity: CommonBundle\Entity\WeappUser
+            joinColumn:
+                name: weapp_user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false

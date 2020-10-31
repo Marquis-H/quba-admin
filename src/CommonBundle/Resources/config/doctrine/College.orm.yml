@@ -1,0 +1,29 @@
+CommonBundle\Entity\College:
+    type: entity
+    table: weapp_college
+    repositoryClass: CommonBundle\Repository\CollegeRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        description:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        Professional:
+            targetEntity: CommonBundle\Entity\Professional
+            mappedBy: College

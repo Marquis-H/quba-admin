@@ -1,0 +1,74 @@
+admin.auth:
+    prefix: /auth
+    type: annotation
+    resource: "@AdminApiBundle/Controller/SecurityController.php"
+
+admin.dashboard:
+    prefix: /dashboard
+    type: annotation
+    resource: "@AdminApiBundle/Controller/DashboardController.php"
+
+admin.user:
+    prefix: /user
+    type: annotation
+    resource: "@AdminApiBundle/Controller/UserController.php"
+
+admin.profile:
+    prefix: /profile
+    type: annotation
+    resource: "@AdminApiBundle/Controller/ProfileController.php"
+
+admin.setting:
+    prefix: /setting
+    type: annotation
+    resource: "@AdminApiBundle/Controller/SettingController.php"
+
+admin.weapp_user:
+    prefix: /weapp_user
+    type: annotation
+    resource: "@AdminApiBundle/Controller/WeappUserController.php"
+
+admin.upload:
+    prefix: /upload
+    type: annotation
+    resource: "@AdminApiBundle/Controller/UploadController.php"
+
+admin.college:
+    prefix: /college
+    type: annotation
+    resource: "@AdminApiBundle/Controller/CollegeController.php"
+
+admin.professional:
+    prefix: /professional
+    type: annotation
+    resource: "@AdminApiBundle/Controller/ProfessionalController.php"
+
+admin.idle_category:
+    prefix: /idle_category
+    type: annotation
+    resource: "@AdminApiBundle/Controller/IdleCategoryController.php"
+
+admin.match_category:
+    prefix: /match_category
+    type: annotation
+    resource: "@AdminApiBundle/Controller/MatchCategoryController.php"
+
+admin.match_info:
+    prefix: /match_info
+    type: annotation
+    resource: "@AdminApiBundle/Controller/MatchInfoController.php"
+
+admin.banner:
+    prefix: /banner
+    type: annotation
+    resource: "@AdminApiBundle/Controller/BannerController.php"
+
+admin.page:
+    prefix: /page
+    type: annotation
+    resource: "@AdminApiBundle/Controller/PageController.php"
+
+admin.idle_application:
+    prefix: /idle_application
+    type: annotation
+    resource: "@AdminApiBundle/Controller/IdleApplicationController.php"

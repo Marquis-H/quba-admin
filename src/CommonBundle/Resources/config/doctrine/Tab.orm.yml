@@ -1,0 +1,24 @@
+CommonBundle\Entity\Tab:
+    type: entity
+    table: weapp_tab
+    repositoryClass: CommonBundle\Repository\TabRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        type:
+            type: string
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update

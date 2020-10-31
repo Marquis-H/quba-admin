@@ -1,0 +1,13 @@
+CommonBundle\Entity\FosUser:
+    type: entity
+    table: fos_user
+    repositoryClass: CommonBundle\Repository\FosUserRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            nullable: true

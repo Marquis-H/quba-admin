@@ -1,0 +1,46 @@
+CommonBundle\Entity\WeappUserProfile:
+    type: entity
+    table: weapp_user_profile
+    repositoryClass: CommonBundle\Repository\WeappUserProfileRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 100
+        gender:
+            type: string
+        mobile:
+            type: string
+            length: 100
+        sNo:
+            type: string
+            length: 16
+            options:
+                comment: 学号
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        College:
+            targetEntity: CommonBundle\Entity\College
+            joinColumn:
+                name: weapp_college
+                referencedColumnName: id
+                onDelete: SET NULL
+        Professional:
+            targetEntity: CommonBundle\Entity\Professional
+            joinColumn:
+                name: weapp_professional
+                referencedColumnName: id
+                onDelete: SET NULL

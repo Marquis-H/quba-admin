@@ -1,0 +1,48 @@
+CommonBundle\Entity\IdleProfile:
+    type: entity
+    table: weapp_idle_profile
+    repositoryClass: CommonBundle\Repository\IdleProfileRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        receipt:
+            type: integer
+            options:
+                comment: 交易编号
+        tradeAt:
+            type: datetime
+            options:
+                comment: 交易发起时间
+        tradeEndAt:
+            type: datetime
+            nullable: true
+            options:
+                comment: 交易结束时间
+        status:
+            type: string
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        IdleApplication:
+            targetEntity: CommonBundle\Entity\IdleApplication
+            joinColumn:
+                name: weapp_idle_application
+                referencedColumnName: id
+                onDelete: CASCADE
+        Profile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+                onDelete: CASCADE
