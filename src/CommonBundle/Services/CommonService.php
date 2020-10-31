@@ -63,7 +63,7 @@ class CommonService extends AbstractService
                     $output = [
                         'title' => $obj->getTitle(),
                         'url' => $obj->getUrl(),
-                        'file' => $obj->getFile() ? ($domain . unserialize((string)$obj->getFile())[0]['response']['data']['file']) : null
+                        'file' => $obj->getFile() ? ($domain . $obj->getFile()[0]['response']['data']['file']) : null
                     ];
                     break;
                 case $obj instanceof Page:
