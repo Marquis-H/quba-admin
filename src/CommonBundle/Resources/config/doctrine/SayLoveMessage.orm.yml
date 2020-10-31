@@ -18,6 +18,7 @@ CommonBundle\Entity\SayLoveMessage:
                 comment: 自己暱稱
         selfGender:
             type: string
+            nullable: true
             options:
                 comment: 自己性別
         sheName:
