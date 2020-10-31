@@ -254,4 +254,97 @@ class WeappUserProfile
     {
         return $this->Professional;
     }
+<<<<<<< HEAD
+=======
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $IdleApplication;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $MatchApplication;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->IdleApplication = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->MatchApplication = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add idleApplication.
+     *
+     * @param \CommonBundle\Entity\IdleApplication $idleApplication
+     *
+     * @return WeappUserProfile
+     */
+    public function addIdleApplication(\CommonBundle\Entity\IdleApplication $idleApplication)
+    {
+        $this->IdleApplication[] = $idleApplication;
+
+        return $this;
+    }
+
+    /**
+     * Remove idleApplication.
+     *
+     * @param \CommonBundle\Entity\IdleApplication $idleApplication
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeIdleApplication(\CommonBundle\Entity\IdleApplication $idleApplication)
+    {
+        return $this->IdleApplication->removeElement($idleApplication);
+    }
+
+    /**
+     * Get idleApplication.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIdleApplication()
+    {
+        return $this->IdleApplication;
+    }
+
+    /**
+     * Add matchApplication.
+     *
+     * @param \CommonBundle\Entity\MatchApplication $matchApplication
+     *
+     * @return WeappUserProfile
+     */
+    public function addMatchApplication(\CommonBundle\Entity\MatchApplication $matchApplication)
+    {
+        $this->MatchApplication[] = $matchApplication;
+
+        return $this;
+    }
+
+    /**
+     * Remove matchApplication.
+     *
+     * @param \CommonBundle\Entity\MatchApplication $matchApplication
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMatchApplication(\CommonBundle\Entity\MatchApplication $matchApplication)
+    {
+        return $this->MatchApplication->removeElement($matchApplication);
+    }
+
+    /**
+     * Get matchApplication.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatchApplication()
+    {
+        return $this->MatchApplication;
+    }
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
 }

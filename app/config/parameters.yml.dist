@@ -39,3 +39,5 @@ parameters:
     qiniu_bucket: ~
     qiniu_domain: ~
     is_dev_mode: false
+    SUBMAIL_APPID: ~
+    SUBMAIL_APPKEY: ~

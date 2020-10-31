@@ -41,6 +41,10 @@ class WeappUserController extends AbstractApiController
         $accessor = PropertyAccess::createPropertyAccessor();
         /** @var WeappUser $user */
         $user = $this->getUser();
+<<<<<<< HEAD
+=======
+        /** @var WeappUserProfile $profile */
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
         $profile = $user->getWeappUserProfile();
         if ($request->isMethod('POST')) {
             $em = $this->getEntityManager();

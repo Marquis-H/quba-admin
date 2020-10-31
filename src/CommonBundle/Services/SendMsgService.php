@@ -12,6 +12,10 @@ use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonRedis;
 use CommonBundle\Helpers\CommonTools;
 use GuzzleHttp\Client;
+<<<<<<< HEAD
+=======
+use Qiniu\Sms\Sms;
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -46,9 +50,13 @@ class SendMsgService
 
     /**
      * @param $mobile
+<<<<<<< HEAD
      * @param $locale
      * @param $number
      * @throws ApiException
+=======
+     * @param $number
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
      */
     public function sendCaptchaSMS($mobile, $number)
     {
@@ -56,8 +64,16 @@ class SendMsgService
         $redis = $this->container->get(CommonRedis::class)->getRedis();
         if (!$redis->exists($captchaKey)) {
             $captcha = CommonTools::genCaptcha();
+<<<<<<< HEAD
             $this->sendSMSMessage($mobile, strip_tags("短信编号：{$number}，验证码：{$captcha}"));
             $redis->set($captchaKey, $captcha, 50);
+=======
+            $service = $this->container->get(SMSService::class);
+            $service->sendMessage($mobile, '2MH8N4', ['code' => $number, 'exprie_minute' => 10]);
+
+            $this->sendSMSMessage($mobile, strip_tags("短信编号：{$number}，验证码：{$captcha}"));
+            $redis->set($captchaKey, $captcha, 600);
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
         }
     }
 

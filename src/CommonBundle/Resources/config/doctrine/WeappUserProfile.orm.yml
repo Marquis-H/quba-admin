@@ -44,3 +44,13 @@ CommonBundle\Entity\WeappUserProfile:
                 name: weapp_professional
                 referencedColumnName: id
                 onDelete: SET NULL
+<<<<<<< HEAD
+=======
+    oneToMany:
+        IdleApplication:
+            targetEntity: CommonBundle\Entity\IdleApplication
+            mappedBy: Profile
+        MatchApplication:
+            targetEntity: CommonBundle\Entity\MatchApplication
+            mappedBy: Profile
+>>>>>>> 9322d1f3deb79714a7d9c05aa4e611a75f6b7637
