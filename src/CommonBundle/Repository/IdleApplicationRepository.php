@@ -34,7 +34,7 @@ class IdleApplicationRepository extends \Doctrine\ORM\EntityRepository
         if ($cId != 0) {
             $result = $result
                 ->andWhere('ic.id = :cId')
-                ->setParameter('cId', 1);
+                ->setParameter('cId', $cId);
         }
         $result = $result
             ->setParameter('status', IdleStatus::ONLINE)
