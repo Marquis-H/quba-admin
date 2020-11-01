@@ -18,7 +18,7 @@ class UploadController extends AbstractApiController
     /**
      * 上传图片
      *
-     * @Route("/image", name="admin.upload.image", methods={"POST"})
+     * @Route("/image", name="weapp.upload.image", methods={"POST"})
      * @return JsonResponse
      */
     public function uploadImage()
