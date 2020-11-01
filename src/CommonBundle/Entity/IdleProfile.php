@@ -167,10 +167,6 @@ class IdleProfile
     {
         return $this->Profile;
     }
-    /**
-     * @var int
-     */
-    private $receipt;
 
     /**
      * @var \DateTime
@@ -181,31 +177,6 @@ class IdleProfile
      * @var \DateTime|null
      */
     private $tradeEndAt;
-
-
-    /**
-     * Set receipt.
-     *
-     * @param int $receipt
-     *
-     * @return IdleProfile
-     */
-    public function setReceipt($receipt)
-    {
-        $this->receipt = $receipt;
-
-        return $this;
-    }
-
-    /**
-     * Get receipt.
-     *
-     * @return int
-     */
-    public function getReceipt()
-    {
-        return $this->receipt;
-    }
 
     /**
      * Set tradeAt.
@@ -253,5 +224,34 @@ class IdleProfile
     public function getTradeEndAt()
     {
         return $this->tradeEndAt;
+    }
+    /**
+     * @var string
+     */
+    private $receipt;
+
+
+    /**
+     * Set receipt.
+     *
+     * @param string $receipt
+     *
+     * @return IdleProfile
+     */
+    public function setReceipt($receipt)
+    {
+        $this->receipt = $receipt;
+
+        return $this;
+    }
+
+    /**
+     * Get receipt.
+     *
+     * @return string
+     */
+    public function getReceipt()
+    {
+        return $this->receipt;
     }
 }

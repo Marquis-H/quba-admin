@@ -24,4 +24,22 @@ abstract class TradeStatus
      * 交易取消
      */
     const Cancel = 'Cancel';
+
+    /**
+     * @param $status
+     * @return string
+     */
+    static public function getTitle($status)
+    {
+        switch ($status) {
+            case 'Doing':
+                return '进行中';
+            case 'Done':
+                return '交易完成';
+            case 'Cancel':
+                return '交易取消';
+            default:
+                return '-';
+        }
+    }
 }

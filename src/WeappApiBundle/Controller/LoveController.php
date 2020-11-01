@@ -3,7 +3,6 @@
 
 namespace WeappApiBundle\Controller;
 
-use CommonBundle\Constants\ApiCode;
 use CommonBundle\Entity\SayLoveMessage;
 use CommonBundle\Entity\SayLoveMessageComment;
 use CommonBundle\Entity\WeappUser;
@@ -29,16 +28,11 @@ class LoveController extends AbstractApiController
      */
     public function loveList(Request $request)
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-        $params = $request->query->all(); // profile id
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
         $common = $this->get(CommonService::class);
-        if ($id = $accessor->getValue($params, '[id]')) {
-            $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy(['Profile' => $id], ["createdAt" => 'desc']);
-        } else {
-            $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy([], ["createdAt" => 'desc']);
-        }
+        $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy([], ["createdAt" => 'desc']);
+
 
         return $this->createSuccessJSONResponse('success', $common->toDataModel($sayLoves));
     }
@@ -56,10 +50,6 @@ class LoveController extends AbstractApiController
         /** @var WeappUser $user */
         $user = $this->getUser();
         $profile = $user->getWeappUserProfile();
-
-//        if (!$profile) {
-//            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
-//        }
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();
         CommonTools::checkParams($params, ['nickname', 'name', 'taName', 'content']);

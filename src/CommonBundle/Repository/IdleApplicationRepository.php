@@ -2,6 +2,7 @@
 
 namespace CommonBundle\Repository;
 
+use CommonBundle\Constants\IdleStatus;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -24,13 +25,21 @@ class IdleApplicationRepository extends \Doctrine\ORM\EntityRepository
      * @param $cId
      * @return mixed
      */
-    public function findByCategory($cId){
-        return $this->createQueryBuilder('q')
+    public function findByCategory($cId)
+    {
+        $result = $this->createQueryBuilder('q')
             ->leftJoin('q.IdleCategory', 'ic')
-            ->where('ic.id = :cId')
-            ->andWhere('q.status = :status')
-            ->setParameters(['cId' => $cId, 'status' => 1])
+            ->where('q.status = :status');
+
+        if ($cId != 0) {
+            $result = $result
+                ->andWhere('ic.id = :cId')
+                ->setParameter('cId', 1);
+        }
+        $result = $result
+            ->setParameter('status', IdleStatus::ONLINE)
             ->getQuery()
             ->getResult();
+        return $result;
     }
 }

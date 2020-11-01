@@ -10,4 +10,29 @@ namespace CommonBundle\Repository;
  */
 class IdleProfileRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $profile
+     * @param $slug
+     * @return mixed
+     */
+    public function findByStatus($profile, $slug)
+    {
+        $result = $this->createQueryBuilder('q')
+            ->select('q')
+            ->leftJoin('q.IdleApplication', 'i');
+
+        if ($slug == 'buy') {
+            $result = $result
+                ->andWhere('q.Profile = :profile')
+                ->setParameter('profile', $profile);
+        } else if ($slug == 'sale') {
+            $result = $result
+                ->andWhere('i.Profile = :profile')
+                ->setParameter('profile', $profile);
+        }
+        return $result
+            ->orderBy('q.createdAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -3,6 +3,7 @@
 
 namespace WeappApiBundle\Controller;
 
+use CommonBundle\Constants\TradeStatus;
 use CommonBundle\Entity\WeappUser;
 use CommonBundle\Entity\WeappUserProfile;
 use CommonBundle\Exception\ApiException;
@@ -10,6 +11,7 @@ use CommonBundle\Helpers\CommonHelper;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
 use CommonBundle\Services\SendMsgService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -87,5 +89,78 @@ class WeappUserController extends AbstractApiController
         ]);
 
         return self::createSuccessJSONResponse('success', $response);
+    }
+
+    /**
+     * 表白墙发布记录
+     * @Route("/publish/love", methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function getLovePublish(Request $request){
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        $common = $this->get(CommonService::class);
+        $sayLoves = $em->getRepository('CommonBundle:SayLoveMessage')->findBy(['Profile' => $profile], ["createdAt" => 'desc']);
+
+        return $this->createSuccessJSONResponse('success', $common->toDataModel($sayLoves));
+    }
+
+    /**
+     * 二手闲置发布记录
+     * @Route("/publish/idle_application", methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function getIdleApplication(Request $request){
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+
+        $commonService = $this->container->get(CommonService::class);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $idleApplications = $em->getRepository('CommonBundle:IdleApplication')->findBy(['Profile' => $profile], ['createdAt' => 'desc']);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
+    }
+
+    /**
+     * 我的交易
+     * @Route("/trade/list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function getTrade(Request $request){
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+        $params = $request->query->all();
+        CommonTools::checkParams($params, ['slug']);
+        $commonService = $this->container->get(CommonService::class);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $trades = $em->getRepository('CommonBundle:IdleProfile')->findByStatus($profile, $params['slug']);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($trades));
     }
 }

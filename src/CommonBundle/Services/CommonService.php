@@ -4,9 +4,13 @@
 namespace CommonBundle\Services;
 
 
+use CommonBundle\Constants\IdleStatus;
+use CommonBundle\Constants\TradeStatus;
 use CommonBundle\Entity\Banner;
 use CommonBundle\Entity\College;
 use CommonBundle\Entity\IdleApplication;
+use CommonBundle\Entity\IdleCategory;
+use CommonBundle\Entity\IdleProfile;
 use CommonBundle\Entity\Page;
 use CommonBundle\Entity\Professional;
 use CommonBundle\Entity\SayLoveMessage;
@@ -86,11 +90,19 @@ class CommonService extends AbstractService
                         'id' => $obj->getId()
                     ];
                     break;
+                case $obj instanceof IdleCategory:
+                    $output = [
+                        'title' => $obj->getTitle(),
+                        'id' => $obj->getId()
+                    ];
+                    break;
                 case $obj instanceof IdleApplication:
                     $output = [
+                        'id' => $obj->getId(),
                         'title' => $obj->getTitle(),
                         'description' => $obj->getDescription(),
                         'status' => $obj->getStatus(),
+                        'statusTitle' => IdleStatus::getTitle($obj->getStatus()),
                         'oldDeep' => $obj->getOldDeep(),
                         'number' => $obj->getNumber(),
                         'originalCost' => $obj->getOriginalCost(),
@@ -102,6 +114,18 @@ class CommonService extends AbstractService
                         'category' => $obj->getIdleCategory()->getTitle(),
                         'famousPhoto' => $obj->getFamousPhoto(),
                         'photos' => $obj->getPhotos()
+                    ];
+                    break;
+                case $obj instanceof IdleProfile:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'status' => $obj->getStatus(),
+                        'statusTitle' => TradeStatus::getTitle($obj->getStatus()),
+                        'receipt' => $obj->getReceipt(),
+                        'tradeAt' => $obj->getTradeAt()->format('Y-m-d H:i'),
+                        'tradeEndAt' => $obj->getTradeEndAt() ? $obj->getTradeEndAt()->format('Y-m-d H:i') : null,
+                        'application' => $this->toDataModel($obj->getIdleApplication()),
+                        'profile' => $this->toDataModel($obj->getProfile()),
                     ];
                     break;
                 case $obj instanceof SayLoveMessage:

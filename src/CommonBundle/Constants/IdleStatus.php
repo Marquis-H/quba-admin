@@ -22,4 +22,22 @@ abstract class IdleStatus
      * 下架
      */
     const OFFLINE = 'Offline';
+
+    /**
+     * @param $status
+     * @return string
+     */
+    static public function getTitle($status)
+    {
+        switch ($status) {
+            case 'Online':
+                return '正在出售';
+            case 'Doing':
+                return '进行中';
+            case 'Offline':
+                return '下架';
+            default:
+                return '-';
+        }
+    }
 }

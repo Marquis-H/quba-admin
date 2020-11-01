@@ -9,7 +9,7 @@ CommonBundle\Entity\IdleProfile:
                 strategy: AUTO
     fields:
         receipt:
-            type: integer
+            type: string
             options:
                 comment: 交易编号
         tradeAt:
