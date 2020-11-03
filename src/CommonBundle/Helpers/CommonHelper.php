@@ -185,6 +185,7 @@ class CommonHelper
                 ];
             } elseif ($obj instanceof IdleApplication) {
                 $output = [
+                    'id' => $obj->getId(),
                     'title' => $obj->getTitle(),
                     'description' => $obj->getDescription(),
                     'status' => $obj->getStatus(),
@@ -197,7 +198,8 @@ class CommonHelper
                     'originalUrl' => $obj->getOriginalUrl(),
                     'remark' => $obj->getRemark(),
                     'category' => $obj->getIdleCategory()->getTitle(),
-                    'profile' => $this->toDataModel($obj->getProfile())
+                    'profile' => $this->toDataModel($obj->getProfile()),
+                    'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
                 ];
             } elseif ($obj instanceof IdleProfile) {
                 $output = [

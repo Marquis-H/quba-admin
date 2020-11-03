@@ -11,26 +11,9 @@
     responsive
     class="card-table"
   >
-    <template slot="actions" slot-scope="data">
-      <b-btn
-        variant="default btn-xs icon-btn md-btn-flat"
-        v-b-tooltip.hover
-        title="編輯"
-        @click="showUserEditModal(data.item)"
-      >
-        <i class="ion ion-md-create"></i>
-      </b-btn>
-      <b-dropdown
-        variant="default btn-xs icon-btn md-btn-flat hide-arrow"
-        :right="!isRTL"
-      >
-        <template slot="button-content">
-          <i class="ion ion-ios-settings"></i>
-        </template>
-        <b-dropdown-item href="javascript:void(0)" @click="del(data.item)"
-          >刪除</b-dropdown-item
-        >
-      </b-dropdown>
+    <template slot="originalUrl" slot-scope="data">
+      <span v-if="data.item.originalUrl">{{ data.item.originalUrl }}</span>
+      <span v-else>-</span>
     </template>
   </b-table>
 </template>
