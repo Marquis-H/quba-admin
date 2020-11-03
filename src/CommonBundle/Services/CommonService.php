@@ -179,6 +179,50 @@ class CommonService extends AbstractService
                     ];
                     break;
                 case $obj instanceof MatchApplication:
+                    $parentData = null;
+                    if ($parent = $obj->getParent()) {
+                        $children = [];
+                        foreach ($parent->getChildren()->getValues() as $value) {
+                            array_push($children, [
+                                'id' => $value->getId(),
+                                'currentStatus' => $value->getCurrentStatus(),
+                                'skill' => $value->getSkill(),
+                                'experience' => $value->getExperience(),
+                                'people' => $value->getPeople(),
+                                'totalPeople' => $value->getTotalPeople(),
+                                'joinEndAt' => $value->getJoinEndAt() ? $value->getJoinEndAt()->format('Y-m-d') : null,
+                                'isSponsor' => $value->getIsSponsor(),
+                                'skills' => $value->getSkills(),
+                                'matchExperience' => $value->getMatchExperience(),
+                                'contact' => $value->getContact(),
+                                'matchInfo' => $this->toDataModel($value->getMatchInfo()),
+                                'profile' => $this->toDataModel($value->getProfile()),
+                                'childrens' => $value->getChildren()->count(),
+                                'children' => [],
+                                'parent' => null,
+                                'createdAt' => $value->getCreatedAt()->format('Y-m-d')
+                            ]);
+                        }
+                        $parentData = [
+                            'id' => $parent->getId(),
+                            'currentStatus' => $parent->getCurrentStatus(),
+                            'skill' => $parent->getSkill(),
+                            'experience' => $parent->getExperience(),
+                            'people' => $parent->getPeople(),
+                            'totalPeople' => $parent->getTotalPeople(),
+                            'joinEndAt' => $parent->getJoinEndAt() ? $parent->getJoinEndAt()->format('Y-m-d') : null,
+                            'isSponsor' => $parent->getIsSponsor(),
+                            'skills' => $parent->getSkills(),
+                            'matchExperience' => $parent->getMatchExperience(),
+                            'contact' => $parent->getContact(),
+                            'matchInfo' => $this->toDataModel($parent->getMatchInfo()),
+                            'profile' => $this->toDataModel($parent->getProfile()),
+                            'childrens' => $parent->getChildren()->count(),
+                            'children' => $children,
+                            'parent' => null,
+                            'createdAt' => $parent->getCreatedAt()->format('Y-m-d')
+                        ];
+                    }
                     $output = [
                         'id' => $obj->getId(),
                         'currentStatus' => $obj->getCurrentStatus(),
@@ -194,7 +238,9 @@ class CommonService extends AbstractService
                         'matchInfo' => $this->toDataModel($obj->getMatchInfo()),
                         'profile' => $this->toDataModel($obj->getProfile()),
                         'childrens' => $obj->getChildren()->count(),
-                        'children' => $this->toDataModel($obj->getChildren())
+                        'children' => $this->toDataModel($obj->getChildren()),
+                        'parent' => $parentData,
+                        'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
                     ];
                     break;
             }

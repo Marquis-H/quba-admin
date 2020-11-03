@@ -108,6 +108,7 @@ class TeamController extends AbstractApiController
             $matchApplication->setPeople($params['people']);
             $matchApplication->setJoinEndAt(new \DateTime($params['joinEndAt']));
             $matchApplication->setIsSponsor(true);
+            $matchApplication->setTotalPeople(1);
             $matchApplication->setProfile($profile);
             $matchApplication->setMatchInfo($matchInfo);
             $em->persist($matchApplication);
@@ -157,7 +158,9 @@ class TeamController extends AbstractApiController
             $newMatchApplication->setProfile($profile);
             $newMatchApplication->setMatchInfo($matchApplication->getMatchInfo());
             $newMatchApplication->setParent($matchApplication);
+            $matchApplication->setTotalPeople($matchApplication->getTotalPeople() + 1);
 
+            $em->persist($matchApplication);
             $em->persist($newMatchApplication);
             $em->flush();
         } catch (\Exception $e) {

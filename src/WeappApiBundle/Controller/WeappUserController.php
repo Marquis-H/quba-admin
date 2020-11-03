@@ -99,7 +99,8 @@ class WeappUserController extends AbstractApiController
      * @return JsonResponse
      * @throws ApiException
      */
-    public function getLovePublish(Request $request){
+    public function getLovePublish(Request $request)
+    {
         /** @var WeappUser $user */
         $user = $this->getUser();
         $profile = $user->getWeappUserProfile();
@@ -123,7 +124,8 @@ class WeappUserController extends AbstractApiController
      * @return JsonResponse
      * @throws ApiException
      */
-    public function getIdleApplication(Request $request){
+    public function getIdleApplication(Request $request)
+    {
         /** @var WeappUser $user */
         $user = $this->getUser();
         $profile = $user->getWeappUserProfile();
@@ -147,7 +149,8 @@ class WeappUserController extends AbstractApiController
      * @return JsonResponse
      * @throws ApiException
      */
-    public function getTrade(Request $request){
+    public function getTrade(Request $request)
+    {
         /** @var WeappUser $user */
         $user = $this->getUser();
         $profile = $user->getWeappUserProfile();
@@ -162,5 +165,45 @@ class WeappUserController extends AbstractApiController
         $trades = $em->getRepository('CommonBundle:IdleProfile')->findByStatus($profile, $params['slug']);
 
         return self::createSuccessJSONResponse('success', $commonService->toDataModel($trades));
+    }
+
+    /**
+     * 组队记录
+     * @Route("/team/list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function getTeam(Request $request)
+    {
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+
+        $commonService = $this->container->get(CommonService::class);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $teams = $em->getRepository('CommonBundle:MatchApplication')->findBy(['Profile' => $profile], ['createdAt' => 'desc']);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($teams));
+    }
+
+    /**
+     * 移除队伍
+     * @Route("/team/remove", methods={"POST"})
+     *
+     * @param Request $request
+     * @throws ApiException
+     */
+    public function removeTeam(Request $request){
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['id']);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $team = $em->getRepository('CommonBundle:MatchApplication')->find($params['id']);
     }
 }
