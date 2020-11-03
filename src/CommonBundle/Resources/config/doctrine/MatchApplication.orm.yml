@@ -10,14 +10,17 @@ CommonBundle\Entity\MatchApplication:
     fields:
         currentStatus:
             type: text
+            nullable: true
             options:
                 comment: 现状
         skill:
             type: text
+            nullable: true
             options:
                 comment: 技能要求
         experience:
             type: text
+            nullable: true
             options:
                 comment: 经验要求
         people:
@@ -32,6 +35,7 @@ CommonBundle\Entity\MatchApplication:
                 default: 0
         joinEndAt:
             type: datetime
+            nullable: true
             options:
                 comment: 加入队伍截止时间
         extra:
@@ -42,15 +46,18 @@ CommonBundle\Entity\MatchApplication:
             options:
                 comment: 是否发起人
         skills:
-            type: array
+            type: text
+            nullable: true
             options:
                 comment: 技能
         matchExperience:
             type: text
+            nullable: true
             options:
                 comment: 比赛经验
         contact:
             type: text
+            nullable: true
             options:
                 comment: 联系方式
         createdAt:
@@ -64,6 +71,13 @@ CommonBundle\Entity\MatchApplication:
                 timestampable:
                     on: update
     manyToOne:
+        Parent:
+            targetEntity: CommonBundle\Entity\MatchApplication
+            inversedBy: Children
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+                onDelete: SET NULL
         MatchInfo:
             targetEntity: CommonBundle\Entity\MatchInfo
             inversedBy: MatchApplication
@@ -78,3 +92,7 @@ CommonBundle\Entity\MatchApplication:
                 name: profile_id
                 referencedColumnName: id
                 onDelete: SET NULL
+    oneToMany:
+        Children:
+            targetEntity: CommonBundle\Entity\MatchApplication
+            mappedBy: Parent

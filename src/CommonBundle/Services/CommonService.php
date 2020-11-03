@@ -11,6 +11,9 @@ use CommonBundle\Entity\College;
 use CommonBundle\Entity\IdleApplication;
 use CommonBundle\Entity\IdleCategory;
 use CommonBundle\Entity\IdleProfile;
+use CommonBundle\Entity\MatchApplication;
+use CommonBundle\Entity\MatchCategory;
+use CommonBundle\Entity\MatchInfo;
 use CommonBundle\Entity\Page;
 use CommonBundle\Entity\Professional;
 use CommonBundle\Entity\SayLoveMessage;
@@ -56,7 +59,9 @@ class CommonService extends AbstractService
                     $output = [
                         'pid' => $obj->getId(),
                         'college' => $obj->getCollege() ? $obj->getCollege()->getId() : null,
+                        'collegeItem' => $this->toDataModel($obj->getCollege()),
                         'professional' => $obj->getProfessional() ? $obj->getProfessional()->getId() : null,
+                        'professionalItem' => $this->toDataModel($obj->getProfessional()),
                         'name' => $obj->getName(),
                         'gender' => $obj->getGender(),
                         'mobile' => $obj->getMobile(),
@@ -150,6 +155,46 @@ class CommonService extends AbstractService
                         'content' => [$obj->getComment()],
                         'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i:s'),
                         'icon' => "check-circle"
+                    ];
+                    break;
+                case $obj instanceof MatchCategory:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'title' => $obj->getTitle(),
+                        'isOnline' => $obj->getIsOnline(),
+                        'type' => $obj->getType()
+                    ];
+                    break;
+                case $obj instanceof MatchInfo:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'title' => $obj->getTitle(),
+                        'tabs' => $obj->getTabs(),
+                        'endAt' => $obj->getEndAt() ? $obj->getEndAt()->format('Y-m-d') : null,
+                        'peopleLimit' => $obj->getPeopleLimit(),
+                        'qualificationLimit' => $obj->getQualificationLimit(),
+                        'files' => $obj->getFiles(),
+                        'urls' => $obj->getUrls(),
+                        'matchCategory' => $this->toDataModel($obj->getMatchCategory())
+                    ];
+                    break;
+                case $obj instanceof MatchApplication:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'currentStatus' => $obj->getCurrentStatus(),
+                        'skill' => $obj->getSkill(),
+                        'experience' => $obj->getExperience(),
+                        'people' => $obj->getPeople(),
+                        'totalPeople' => $obj->getTotalPeople(),
+                        'joinEndAt' => $obj->getJoinEndAt() ? $obj->getJoinEndAt()->format('Y-m-d') : null,
+                        'isSponsor' => $obj->getIsSponsor(),
+                        'skills' => $obj->getSkills(),
+                        'matchExperience' => $obj->getMatchExperience(),
+                        'contact' => $obj->getContact(),
+                        'matchInfo' => $this->toDataModel($obj->getMatchInfo()),
+                        'profile' => $this->toDataModel($obj->getProfile()),
+                        'childrens' => $obj->getChildren()->count(),
+                        'children' => $this->toDataModel($obj->getChildren())
                     ];
                     break;
             }

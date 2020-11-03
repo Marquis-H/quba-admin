@@ -32,3 +32,13 @@ api.weapp_love:
     prefix: /love
     type: annotation
     resource: "@WeappApiBundle/Controller/LoveController.php"
+
+api.weapp_match:
+    prefix: /match
+    type: annotation
+    resource: "@WeappApiBundle/Controller/MatchController.php"
+
+api.weapp_team:
+    prefix: /team
+    type: annotation
+    resource: "@WeappApiBundle/Controller/TeamController.php"

@@ -1,0 +1,41 @@
+CommonBundle\Entity\Mark:
+    type: entity
+    table: weapp_mark
+    repositoryClass: CommonBundle\Repository\MarkRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        slug:
+            type: string
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        WeappUserProfile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: weapp_user_profile_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        IdleApplication:
+            targetEntity: CommonBundle\Entity\IdleApplication
+            joinColumn:
+                name: weapp_idle_application_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        MatchInfo:
+            targetEntity: CommonBundle\Entity\MatchInfo
+            joinColumn:
+                name: weapp_match_info_id
+                referencedColumnName: id
+                onDelete: CASCADE

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
 use WeappApiBundle\Constants\ApiCode;
+use WeappApiBundle\Exceptions\WeappApiException;
 
 class IdleController extends AbstractApiController
 {
@@ -95,6 +96,7 @@ class IdleController extends AbstractApiController
      * @param Request $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws WeappApiException
      */
     public function create(Request $request)
     {
@@ -103,7 +105,7 @@ class IdleController extends AbstractApiController
         $profile = $user->getWeappUserProfile();
 
         if (!$profile) {
-            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+            throw new WeappApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
         }
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();

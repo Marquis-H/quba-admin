@@ -53,11 +53,6 @@ class MatchApplication
     private $isSponsor;
 
     /**
-     * @var array
-     */
-    private $skills;
-
-    /**
      * @var string
      */
     private $matchExperience;
@@ -291,30 +286,6 @@ class MatchApplication
     }
 
     /**
-     * Set skills.
-     *
-     * @param array $skills
-     *
-     * @return MatchApplication
-     */
-    public function setSkills($skills)
-    {
-        $this->skills = $skills;
-
-        return $this;
-    }
-
-    /**
-     * Get skills.
-     *
-     * @return array
-     */
-    public function getSkills()
-    {
-        return $this->skills;
-    }
-
-    /**
      * Set matchExperience.
      *
      * @param string $matchExperience
@@ -456,5 +427,111 @@ class MatchApplication
     public function getProfile()
     {
         return $this->Profile;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Children;
+
+    /**
+     * @var \CommonBundle\Entity\MatchApplication
+     */
+    private $Parent;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add child.
+     *
+     * @param \CommonBundle\Entity\MatchApplication $child
+     *
+     * @return MatchApplication
+     */
+    public function addChild(\CommonBundle\Entity\MatchApplication $child)
+    {
+        $this->Children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param \CommonBundle\Entity\MatchApplication $child
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeChild(\CommonBundle\Entity\MatchApplication $child)
+    {
+        return $this->Children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->Children;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param \CommonBundle\Entity\MatchApplication|null $parent
+     *
+     * @return MatchApplication
+     */
+    public function setParent(\CommonBundle\Entity\MatchApplication $parent = null)
+    {
+        $this->Parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return \CommonBundle\Entity\MatchApplication|null
+     */
+    public function getParent()
+    {
+        return $this->Parent;
+    }
+    /**
+     * @var string
+     */
+    private $skills;
+
+
+    /**
+     * Set skills.
+     *
+     * @param string $skills
+     *
+     * @return MatchApplication
+     */
+    public function setSkills($skills)
+    {
+        $this->skills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * Get skills.
+     *
+     * @return string
+     */
+    public function getSkills()
+    {
+        return $this->skills;
     }
 }
