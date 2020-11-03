@@ -55,7 +55,7 @@ class SendMsgService
         if (!$redis->exists($captchaKey)) {
             $captcha = CommonTools::genCaptcha();
             $service = $this->container->get(SMSService::class);
-            $service->sendMessage($mobile, '2MH8N4', ['code' => $number, 'exprie_minute' => 10]);
+            $service->sendMessage($mobile, '2MH8N4', ['code' => $captcha, 'exprie_minute' => 10]);
 
             $this->sendSMSMessage($mobile, strip_tags("短信编号：{$number}，验证码：{$captcha}"));
             $redis->set($captchaKey, $captcha, 600);
