@@ -19,6 +19,7 @@ CommonBundle\Entity\WeappUserProfile:
         sNo:
             type: string
             length: 16
+            nullable: true
             options:
                 comment: 学号
         createdAt:
