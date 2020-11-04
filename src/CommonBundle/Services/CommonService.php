@@ -11,6 +11,7 @@ use CommonBundle\Entity\College;
 use CommonBundle\Entity\IdleApplication;
 use CommonBundle\Entity\IdleCategory;
 use CommonBundle\Entity\IdleProfile;
+use CommonBundle\Entity\Mark;
 use CommonBundle\Entity\MatchApplication;
 use CommonBundle\Entity\MatchCategory;
 use CommonBundle\Entity\MatchInfo;
@@ -20,6 +21,8 @@ use CommonBundle\Entity\SayLoveMessage;
 use CommonBundle\Entity\SayLoveMessageComment;
 use CommonBundle\Entity\WeappUser;
 use CommonBundle\Entity\WeappUserProfile;
+use CommonBundle\Repository\MatchApplicationRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 
 class CommonService extends AbstractService
@@ -102,6 +105,9 @@ class CommonService extends AbstractService
                     ];
                     break;
                 case $obj instanceof IdleApplication:
+                    /** @var EntityManager $em */
+                    $em = $this->container->get('doctrine.orm.default_entity_manager');
+                    $marks = $em->getRepository('CommonBundle:Mark')->findBy(['IdleApplication' => $obj]);
                     $output = [
                         'id' => $obj->getId(),
                         'title' => $obj->getTitle(),
@@ -118,7 +124,8 @@ class CommonService extends AbstractService
                         'remark' => $obj->getRemark(),
                         'category' => $obj->getIdleCategory()->getTitle(),
                         'famousPhoto' => $obj->getFamousPhoto(),
-                        'photos' => $obj->getPhotos()
+                        'photos' => $obj->getPhotos(),
+                        'marks' => count($marks)
                     ];
                     break;
                 case $obj instanceof IdleProfile:
@@ -166,6 +173,10 @@ class CommonService extends AbstractService
                     ];
                     break;
                 case $obj instanceof MatchInfo:
+                    /** @var EntityManager $em */
+                    $em = $this->container->get('doctrine.orm.default_entity_manager');
+                    $matchApplication = $em->getRepository('CommonBundle:MatchApplication')->findBy(['isSponsor' => true, 'MatchInfo' => $obj]);
+                    $marks = $em->getRepository('CommonBundle:Mark')->findBy(['MatchInfo' => $obj]);
                     $output = [
                         'id' => $obj->getId(),
                         'title' => $obj->getTitle(),
@@ -175,7 +186,9 @@ class CommonService extends AbstractService
                         'qualificationLimit' => $obj->getQualificationLimit(),
                         'files' => $obj->getFiles(),
                         'urls' => $obj->getUrls(),
-                        'matchCategory' => $this->toDataModel($obj->getMatchCategory())
+                        'sponsorApplications' => count($matchApplication),
+                        'matchCategory' => $this->toDataModel($obj->getMatchCategory()),
+                        'marks' => count($marks)
                     ];
                     break;
                 case $obj instanceof MatchApplication:
@@ -240,6 +253,15 @@ class CommonService extends AbstractService
                         'childrens' => $obj->getChildren()->count(),
                         'children' => $this->toDataModel($obj->getChildren()),
                         'parent' => $parentData,
+                        'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
+                    ];
+                    break;
+                case $obj instanceof Mark:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'slug' => $obj->getSlug(),
+                        'idleApplication' => $this->toDataModel($obj->getIdleApplication()),
+                        'matchInfo' => $this->toDataModel($obj->getMatchInfo()),
                         'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
                     ];
                     break;

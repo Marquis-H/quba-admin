@@ -42,3 +42,8 @@ api.weapp_team:
     prefix: /team
     type: annotation
     resource: "@WeappApiBundle/Controller/TeamController.php"
+
+api.weapp_mark:
+    prefix: /mark
+    type: annotation
+    resource: "@WeappApiBundle/Controller/MarkController.php"

@@ -197,13 +197,86 @@ class WeappUserController extends AbstractApiController
      * @Route("/team/remove", methods={"POST"})
      *
      * @param Request $request
+     * @return JsonResponse
      * @throws ApiException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function removeTeam(Request $request){
+    public function removeTeam(Request $request)
+    {
         $params = $request->request->all();
         CommonTools::checkParams($params, ['id']);
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $team = $em->getRepository('CommonBundle:MatchApplication')->find($params['id']);
+        if ($team == null) {
+            throw new ApiException('无数据', ApiCode::DATA_NOT_FOUND);
+        }
+
+        $em->remove($team);
+        $em->flush();
+
+        return self::createSuccessJSONResponse('success');
+    }
+
+    /**
+     * 收藏列表
+     * @Route("/mark/list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function getMark(Request $request)
+    {
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+
+        $params = $request->query->all();
+        CommonTools::checkParams($params, ['slug']);
+        $commonService = $this->container->get(CommonService::class);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $mark = $em->getRepository('CommonBundle:Mark')->findBy(['WeappUserProfile' => $profile, 'slug' => $params['slug']], ['createdAt' => 'desc']);
+
+        return $this->createSuccessJSONResponse('success', $commonService->toDataModel($mark));
+    }
+
+    /**
+     * 移除Mark
+     * @Route("/mark/remove", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function removeMark(Request $request)
+    {
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
+        if (!$profile) {
+            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
+
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['id']);
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $mark = $em->getRepository('CommonBundle:Mark')->findOneBy(['id' => $params['id'], 'WeappUserProfile' => $profile]);
+        if ($mark == null) {
+            throw new ApiException('无数据', ApiCode::DATA_NOT_FOUND);
+        }
+
+        $em->remove($mark);
+        $em->flush();
+
+        return self::createSuccessJSONResponse('success');
     }
 }
