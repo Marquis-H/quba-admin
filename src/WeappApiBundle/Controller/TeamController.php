@@ -63,7 +63,7 @@ class TeamController extends AbstractApiController
         CommonTools::checkParams($params, ['id']);
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $matchAppcation = $em->getRepository('CommonBundle:MatchApplication')->findOneBy(['id' => $params['id'], 'Profile' => $profile]);
+        $matchAppcation = $em->getRepository('CommonBundle:MatchApplication')->findOneBy(['id' => $params['id']]);
 
         if ($matchAppcation == null) {
             throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
