@@ -164,7 +164,7 @@ class IdleController extends AbstractApiController
 
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['id' => $params['id'], 'Profile' => $profile]);
+        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['id' => $params['id']]);
         if ($idleProfile == null) {
             throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
         }
