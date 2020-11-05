@@ -177,7 +177,7 @@ class CommonHelper
                     'experience' => $obj->getExperience(),
                     'people' => $obj->getPeople(),
                     'totalPeople' => $obj->getTotalPeople(),
-                    'joinEndAt' => $obj->getJoinEndAt()->format('Y-m-d H:i:s'),
+                    'joinEndAt' => $obj->getJoinEndAt()?$obj->getJoinEndAt()->format('Y-m-d H:i:s'):null,
                     'isSponsor' => $obj->getIsSponsor(),
                     'skills' => $obj->getSkills(),
                     'matchExperience' => $obj->getMatchExperience(),
