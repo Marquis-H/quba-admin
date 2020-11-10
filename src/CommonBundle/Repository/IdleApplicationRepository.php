@@ -42,4 +42,35 @@ class IdleApplicationRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
         return $result;
     }
+
+    /**
+     * @param $cId
+     * @param $title
+     * @param $currentSortOrder
+     * @return QueryBuilder|mixed
+     */
+    public function searchByCategory($cId, $title, $currentSortOrder)
+    {
+        $result = $this->createQueryBuilder('q')
+            ->leftJoin('q.IdleCategory', 'ic')
+            ->where('q.status = :status')
+            ->andWhere('q.title LIKE :title');
+
+        if ($cId != 0) {
+            $result = $result
+                ->andWhere('ic.id = :cId')
+                ->setParameter('cId', $cId);
+        }
+
+        if ($currentSortOrder != "null") {
+            $result = $result
+                ->orderBy('q.currentCost', $currentSortOrder);
+        }
+        $result = $result
+            ->setParameter('status', IdleStatus::ONLINE)
+            ->setParameter('title', "%{$title}%")
+            ->getQuery()
+            ->getResult();
+        return $result;
+    }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
+use WeappApiBundle\Annotation\Anonymous;
 use WeappApiBundle\Constants\ApiCode;
 use WeappApiBundle\Exceptions\WeappApiException;
 
@@ -25,21 +26,13 @@ class IdleController extends AbstractApiController
     /**
      * 分類
      * @Route("/category", methods={"GET"})
-     *
+     * @Anonymous()
      * @param Request $request
      * @return JsonResponse
      * @throws ApiException
      */
     public function idleCategory(Request $request)
     {
-        /** @var WeappUser $user */
-        $user = $this->getUser();
-        $profile = $user->getWeappUserProfile();
-
-        if (!$profile) {
-            throw new ApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
-        }
-
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $idleCategory = $em->getRepository('CommonBundle:IdleCategory')->findAll();
         $commonService = $this->container->get(CommonService::class);
@@ -312,5 +305,24 @@ class IdleController extends AbstractApiController
         }
 
         return $this->createSuccessJSONResponse('success');
+    }
+
+    /**
+     * @Route("/search", methods={"GET"})
+     * @Anonymous()
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function search(Request $request){
+        $params = $request->query->all();
+        CommonTools::checkParams($params, ['cId', 'keyword', 'currentSortOrder']); // 類別ID
+        $commonService = $this->container->get(CommonService::class);
+
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $idleApplications = $em->getRepository('CommonBundle:IdleApplication')->searchByCategory($params['cId'], $params['keyword'], $params['currentSortOrder']);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
     }
 }
