@@ -46,7 +46,7 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('isOnline', $isOnline);
         }
 
-        if($type != "null"){
+        if($type != 0){
             $result = $result
                 ->andWhere('m.type = :type')
                 ->setParameter('type', $isOnline);

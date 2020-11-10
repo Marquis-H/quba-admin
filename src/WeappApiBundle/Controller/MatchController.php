@@ -12,11 +12,29 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use WeappApiBundle\Annotation\Anonymous;
 use WeappApiBundle\Constants\ApiCode;
 use WeappApiBundle\Exceptions\WeappApiException;
 
 class MatchController extends AbstractApiController
 {
+    /**
+     * 分類
+     * @Route("/category", methods={"GET"})
+     * @Anonymous()
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function idleCategory(Request $request)
+    {
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $matchCategory = $em->getRepository('CommonBundle:MatchCategory')->findAll();
+        $commonService = $this->container->get(CommonService::class);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($matchCategory));
+    }
+
     /**
      * 列表
      * @Route("/list", methods={"GET"})
@@ -66,5 +84,26 @@ class MatchController extends AbstractApiController
 
         $commonService = $this->container->get(CommonService::class);
         return self::createSuccessJSONResponse('success', $commonService->toDataModel($matchInfo));
+    }
+
+    /**
+     * 搜索
+     * @Route("/search", methods={"GET"})
+     * @Anonymous()
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     */
+    public function search(Request $request)
+    {
+        $params = $request->query->all();
+        CommonTools::checkParams($params, ['keyword', 'createdAtOrder', 'isOnline', 'type', 'cId']); // 類別ID
+        $commonService = $this->container->get(CommonService::class);
+
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $idleApplications = $em->getRepository('CommonBundle:MatchInfo')->searchByCategory($params['cId'], $params['isOnline'], $params['type'], $params['keyword'], $params['createdAtOrder']);
+
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
     }
 }

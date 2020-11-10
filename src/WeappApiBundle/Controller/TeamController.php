@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use WeappApiBundle\Annotation\Anonymous;
 use WeappApiBundle\Constants\ApiCode;
 use WeappApiBundle\Exceptions\WeappApiException;
 
@@ -169,26 +168,5 @@ class TeamController extends AbstractApiController
         }
 
         return self::createSuccessJSONResponse('success');
-    }
-
-    /**
-     * 搜索
-     * @Route("/search", methods={"GET"})
-     * @Anonymous()
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ApiException
-     */
-    public function search(Request $request)
-    {
-        $params = $request->query->all();
-        CommonTools::checkParams($params, ['keyword', 'currentSortOrder', 'isOnline', 'type', 'cId']); // 類別ID
-        $commonService = $this->container->get(CommonService::class);
-
-        /** @var EntityManager $em */
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $idleApplications = $em->getRepository('CommonBundle:MatchInfo')->searchByCategory($params['cId'], $params['isOnline'], $params['type'], $params['keyword'], $params['currentSortOrder']);
-
-        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
     }
 }
