@@ -54,7 +54,7 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
 
         if ($currentSortOrder != "null") {
             $result = $result
-                ->orderBy('q.currentCost', $currentSortOrder);
+                ->orderBy('q.createdAt', $currentSortOrder);
         }
 
         $result = $result
