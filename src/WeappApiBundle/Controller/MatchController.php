@@ -38,7 +38,7 @@ class MatchController extends AbstractApiController
     /**
      * 列表
      * @Route("/list", methods={"GET"})
-     *
+     * @Anonymous()
      * @param Request $request
      * @return JsonResponse
      */
