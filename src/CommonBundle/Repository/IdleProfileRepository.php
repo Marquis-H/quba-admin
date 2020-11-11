@@ -2,6 +2,8 @@
 
 namespace CommonBundle\Repository;
 
+use CommonBundle\Constants\TradeStatus;
+
 /**
  * IdleProfileRepository
  *
@@ -34,5 +36,22 @@ class IdleProfileRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('q.createdAt', 'desc')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param $profile
+     * @return array
+     */
+    public function findOrders($profile){
+        return $this->createQueryBuilder('q')
+            ->leftJoin('q.IdleApplication', 'a')
+            ->where('q.Profile = :profile or a.Profile = :profile')
+            ->andWhere('q.status = :status')
+            ->setParameters([
+                'profile' => $profile,
+                'status' => TradeStatus::Done
+            ])
+            ->getQuery()
+            ->getArrayResult();
     }
 }

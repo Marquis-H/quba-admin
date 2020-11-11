@@ -45,8 +45,8 @@ class WeappUserController extends AbstractApiController
         $user = $this->getUser();
         /** @var WeappUserProfile $profile */
         $profile = $user->getWeappUserProfile();
+        $em = $this->getEntityManager();
         if ($request->isMethod('POST')) {
-            $em = $this->getEntityManager();
             $params = $request->request->all();
             if (!$profile) {
                 CommonTools::checkParams($params, ['mobile', 'captcha']);
@@ -79,9 +79,12 @@ class WeappUserController extends AbstractApiController
         $memberExpand = $common->toDataModel($user);
         $profile = $common->toDataModel($profile);
 
-        $orders = 0;
-        $applications = 0;
-        $teams = 0;
+        $idleApplicationRepo = $em->getRepository('CommonBundle:IdleApplication');
+        $teamRepo = $em->getRepository('CommonBundle:MatchApplication');
+        $idleProfileRepo = $em->getRepository('CommonBundle:IdleProfile');
+        $orders = count($idleProfileRepo->findOrders($profile));
+        $applications = count($idleApplicationRepo->findBy(['WeappUserProfile' => $profile])); // 商品发布数
+        $teams = count($teamRepo->findBy(['WeappUserProfile' => $profile])); // 组队数
         $response = array_merge($memberExpand, $profile, [
             'orders' => $orders,
             'applications' => $applications,

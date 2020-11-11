@@ -4,6 +4,7 @@
 namespace WeappApiBundle\Controller;
 
 
+use CommonBundle\Constants\IdleStatus;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
@@ -54,5 +55,24 @@ class WebController extends AbstractApiController
         $output = $repo->findOneBy(['slug' => $params['slug']]);
 
         return $this->createSuccessJSONResponse('success', $common->toDataModel($output));
+    }
+
+    /**
+     * 静态数据
+     * @Route("/statistic", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function statistic(Request $request){
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $idleApplications = $em->getRepository('CommonBundle:IdleApplication')->findBy(['status' => IdleStatus::ONLINE]);
+        $matchInfos = $em->getRepository('CommonBundle:MatchInfo')->findAll();
+        $matchApplications = $em->getRepository('CommonBundle:MatchApplication')->findBy(['isSponsor' => true]);
+
+        return $this->createSuccessJSONResponse('success', [
+            'idleApplications' => count($idleApplications),
+            'matchInfos' => count($matchInfos),
+            'matchApplications' => count($matchApplications)
+        ]);
     }
 }
