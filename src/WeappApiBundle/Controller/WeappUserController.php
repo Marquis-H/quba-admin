@@ -82,9 +82,9 @@ class WeappUserController extends AbstractApiController
         $idleApplicationRepo = $em->getRepository('CommonBundle:IdleApplication');
         $teamRepo = $em->getRepository('CommonBundle:MatchApplication');
         $idleProfileRepo = $em->getRepository('CommonBundle:IdleProfile');
-        $orders = count($idleProfileRepo->findOrders($profile));
-        $applications = count($idleApplicationRepo->findBy(['WeappUserProfile' => $profile])); // 商品发布数
-        $teams = count($teamRepo->findBy(['WeappUserProfile' => $profile])); // 组队数
+        $orders = count($idleProfileRepo->findOrders($user->getWeappUserProfile()));
+        $applications = count($idleApplicationRepo->findBy(['Profile' => $user->getWeappUserProfile()])); // 商品发布数
+        $teams = count($teamRepo->findBy(['Profile' => $user->getWeappUserProfile()])); // 组队数
         $response = array_merge($memberExpand, $profile, [
             'orders' => $orders,
             'applications' => $applications,
