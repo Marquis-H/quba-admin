@@ -272,8 +272,8 @@ class CommonService extends AbstractService
                         'isReply' => $obj->getIsReply(),
                         'buyComment' => $obj->getBuyComment(),
                         'saleComment' => $obj->getSaleComment(),
-                        'buyCommentAt' => $obj->getBuyCommentAt()->format('Y-m-d H:i:s'),
-                        'saleCommentAt' => $obj->getSaleCommentAt()->format('Y-m-d H:i:s'),
+                        'buyCommentAt' => $obj->getBuyCommentAt() ? $obj->getBuyCommentAt()->format('Y-m-d H:i:s') : null,
+                        'saleCommentAt' => $obj->getSaleCommentAt() ? $obj->getSaleCommentAt()->format('Y-m-d H:i:s') : null,
                         'buyProfile' => $this->toDataModel($obj->getBuyProfile()),
                         'saleProfile' => $this->toDataModel($obj->getSaleProfile())
                     ];
