@@ -17,10 +17,10 @@ CommonBundle\Entity\IdleMessage:
             type: text
             nullable: true
         buyCommentAt:
-            type: date
+            type: datetime
             nullable: true
         saleCommentAt:
-            type: date
+            type: datetime
             nullable: true
         createdAt:
             type: datetime
