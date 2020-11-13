@@ -45,6 +45,7 @@ CommonBundle\Entity\WeappUser:
     oneToOne:
         WeappUserProfile:
             targetEntity: CommonBundle\Entity\WeappUserProfile
+            inversedBy: WeappUser
             joinColumn:
                 name: weapp_user_profile
                 referencedColumnName: id

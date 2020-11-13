@@ -52,3 +52,7 @@ CommonBundle\Entity\WeappUserProfile:
         MatchApplication:
             targetEntity: CommonBundle\Entity\MatchApplication
             mappedBy: Profile
+    oneToOne:
+        WeappUser:
+            targetEntity: CommonBundle\Entity\WeappUser
+            mappedBy: WeappUserProfile

@@ -345,4 +345,33 @@ class WeappUserProfile
     {
         return $this->MatchApplication;
     }
+    /**
+     * @var \CommonBundle\Entity\WeappUser
+     */
+    private $WeappUser;
+
+
+    /**
+     * Set weappUser.
+     *
+     * @param \CommonBundle\Entity\WeappUser|null $weappUser
+     *
+     * @return WeappUserProfile
+     */
+    public function setWeappUser(\CommonBundle\Entity\WeappUser $weappUser = null)
+    {
+        $this->WeappUser = $weappUser;
+
+        return $this;
+    }
+
+    /**
+     * Get weappUser.
+     *
+     * @return \CommonBundle\Entity\WeappUser|null
+     */
+    public function getWeappUser()
+    {
+        return $this->WeappUser;
+    }
 }

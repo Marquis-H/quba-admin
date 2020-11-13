@@ -69,7 +69,8 @@ class CommonService extends AbstractService
                         'name' => $obj->getName(),
                         'gender' => $obj->getGender(),
                         'mobile' => $obj->getMobile(),
-                        'sNo' => $obj->getSNo()
+                        'sNo' => $obj->getSNo(),
+                        'user' => $this->toDataModel($obj->getWeappUser())
                     ];
                     break;
                 case $obj instanceof Banner:
