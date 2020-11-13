@@ -14,7 +14,7 @@ CommonBundle\Entity\IdleMessage:
             type: text
             nullable: true
         saleComment:
-            type: text
+            type: array
             nullable: true
         buyCommentAt:
             type: datetime

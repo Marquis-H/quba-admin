@@ -15,7 +15,7 @@ class IdleMessage
     /**
      * @var bool
      */
-    private $isReply = true;
+    private $isReply;
 
     /**
      * @var string|null
@@ -23,9 +23,9 @@ class IdleMessage
     private $buyComment;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    private $saleComment;
+    private $saleComment = [];
 
     /**
      * @var \DateTime|null
@@ -124,7 +124,7 @@ class IdleMessage
     /**
      * Set saleComment.
      *
-     * @param string|null $saleComment
+     * @param array|null $saleComment
      *
      * @return IdleMessage
      */
@@ -138,7 +138,7 @@ class IdleMessage
     /**
      * Get saleComment.
      *
-     * @return string|null
+     * @return array|null
      */
     public function getSaleComment()
     {
