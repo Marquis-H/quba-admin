@@ -78,8 +78,10 @@ class IdleMessageController extends AbstractApiController
                     $idleMessage->setIdleApplication($idleApplication);
                     break;
                 case 'sale':
-                    $idleApplication = $em->getRepository('CommonBundle:IdleApplication')->find($params['id']);
-                    $idleMessage->setIdleApplication($idleApplication);
+                    if ($params['isReply'] == false) {
+                        $idleApplication = $em->getRepository('CommonBundle:IdleApplication')->find($params['id']);
+                        $idleMessage->setIdleApplication($idleApplication);
+                    }
                     $idleMessage->setSaleComment($params['comment']);
                     $idleMessage->setSaleCommentAt(new \DateTime());
                     $idleMessage->setSaleProfile($profile);
