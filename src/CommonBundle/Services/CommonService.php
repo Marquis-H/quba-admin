@@ -10,6 +10,7 @@ use CommonBundle\Entity\Banner;
 use CommonBundle\Entity\College;
 use CommonBundle\Entity\IdleApplication;
 use CommonBundle\Entity\IdleCategory;
+use CommonBundle\Entity\IdleMessage;
 use CommonBundle\Entity\IdleProfile;
 use CommonBundle\Entity\Mark;
 use CommonBundle\Entity\MatchApplication;
@@ -263,6 +264,18 @@ class CommonService extends AbstractService
                         'idleApplication' => $this->toDataModel($obj->getIdleApplication()),
                         'matchInfo' => $this->toDataModel($obj->getMatchInfo()),
                         'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
+                    ];
+                    break;
+                case $obj instanceof IdleMessage:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'isReply' => $obj->getIsReply(),
+                        'buyComment' => $obj->getBuyComment(),
+                        'saleComment' => $obj->getSaleComment(),
+                        'buyCommentAt' => $obj->getBuyCommentAt()->format('Y-m-d H:i:s'),
+                        'saleCommentAt' => $obj->getSaleCommentAt()->format('Y-m-d H:i:s'),
+                        'buyProfile' => $this->toDataModel($obj->getBuyProfile()),
+                        'saleProfile' => $this->toDataModel($obj->getSaleProfile())
                     ];
                     break;
             }

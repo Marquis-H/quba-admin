@@ -47,3 +47,8 @@ api.weapp_mark:
     prefix: /mark
     type: annotation
     resource: "@WeappApiBundle/Controller/MarkController.php"
+
+api.weapp_idle_message:
+    prefix: /idle_message
+    type: annotation
+    resource: "@WeappApiBundle/Controller/IdleMessageController.php"

@@ -1,0 +1,53 @@
+CommonBundle\Entity\IdleMessage:
+    type: entity
+    table: weapp_idle_message
+    repositoryClass: CommonBundle\Repository\IdleMessageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        isReply:
+            type: boolean
+        buyComment:
+            type: text
+            nullable: true
+        saleComment:
+            type: text
+            nullable: true
+        buyCommentAt:
+            type: date
+            nullable: true
+        saleCommentAt:
+            type: date
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        IdleApplication:
+            targetEntity: CommonBundle\Entity\IdleApplication
+            joinColumn:
+                name: weapp_idle_application
+                referencedColumnName: id
+                onDelete: CASCADE
+        BuyProfile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: buy_profile_id
+                referencedColumnName: id
+                onDelete: SET NULL
+        SaleProfile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: sale_profile_id
+                referencedColumnName: id
+                onDelete: SET NULL
