@@ -127,7 +127,8 @@ class CommonService extends AbstractService
                         'category' => $obj->getIdleCategory()->getTitle(),
                         'famousPhoto' => $obj->getFamousPhoto(),
                         'photos' => $obj->getPhotos(),
-                        'marks' => count($marks)
+                        'marks' => count($marks),
+                        'profile' => $this->toDataModel($obj->getProfile())
                     ];
                     break;
                 case $obj instanceof IdleProfile:
