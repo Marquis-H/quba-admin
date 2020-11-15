@@ -80,7 +80,7 @@ class MarkController extends AbstractApiController
             switch ($params['module']) {
                 case 'idle_application':
                     $idleApplication = $em->getRepository('CommonBundle:IdleApplication')->find($params['id']);
-                    $mark = $markRepo->findBy(['IdleApplication' => $idleApplication, 'Profile' => $profile]);
+                    $mark = $markRepo->findBy(['IdleApplication' => $idleApplication, 'WeappUserProfile' => $profile]);
                     if ($mark == null) {
                         $mark = new Mark();
                     }
@@ -91,7 +91,7 @@ class MarkController extends AbstractApiController
                     break;
                 case 'match_info':
                     $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->find($params['id']);
-                    $mark = $markRepo->findBy(['MatchInfo' => $matchInfo, 'Profile' => $profile]);
+                    $mark = $markRepo->findBy(['MatchInfo' => $matchInfo, 'WeappUserProfile' => $profile]);
                     if ($mark == null) {
                         $mark = new Mark();
                     }
