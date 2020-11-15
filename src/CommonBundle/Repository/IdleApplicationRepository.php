@@ -45,16 +45,16 @@ class IdleApplicationRepository extends \Doctrine\ORM\EntityRepository
 
     /**
      * @param $cId
-     * @param $title
+     * @param $keyword
      * @param $currentSortOrder
      * @return QueryBuilder|mixed
      */
-    public function searchByCategory($cId, $title, $currentSortOrder)
+    public function searchByCategory($cId, $keyword, $currentSortOrder)
     {
         $result = $this->createQueryBuilder('q')
             ->leftJoin('q.IdleCategory', 'ic')
             ->where('q.status = :status')
-            ->andWhere('q.title LIKE :title');
+            ->andWhere('q.title LIKE :title or q.description LIKE :description');
 
         if ($cId != 0) {
             $result = $result
@@ -68,7 +68,8 @@ class IdleApplicationRepository extends \Doctrine\ORM\EntityRepository
         }
         $result = $result
             ->setParameter('status', IdleStatus::ONLINE)
-            ->setParameter('title', "%{$title}%")
+            ->setParameter('title', "%{$keyword}%")
+            ->setParameter('description', "%{$keyword}%")
             ->getQuery()
             ->getResult();
         return $result;
