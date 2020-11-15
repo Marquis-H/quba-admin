@@ -54,14 +54,14 @@ class MarkController extends AbstractApiController
     }
 
     /**
-     * @Route("/add", methods={"POST"})
+     * @Route("/add_remove", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
      * @throws WeappApiException
      * @throws ApiException
      */
-    public function add(Request $request)
+    public function addOrRemove(Request $request)
     {
         /** @var WeappUser $user */
         $user = $this->getUser();
@@ -75,11 +75,15 @@ class MarkController extends AbstractApiController
         CommonTools::checkParams($params, ['id', 'module']);
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $markRepo = $em->getRepository('CommonBundle:Mark');
         try {
-            $mark = new Mark();
             switch ($params['module']) {
                 case 'idle_application':
                     $idleApplication = $em->getRepository('CommonBundle:IdleApplication')->find($params['id']);
+                    $mark = $markRepo->findBy(['IdleApplication' => $idleApplication, 'Profile' => $profile]);
+                    if ($mark == null) {
+                        $mark = new Mark();
+                    }
                     $mark->setIdleApplication($idleApplication);
                     $mark->setWeappUserProfile($profile);
                     $mark->setSlug('idle_application');
@@ -87,14 +91,24 @@ class MarkController extends AbstractApiController
                     break;
                 case 'match_info':
                     $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->find($params['id']);
+                    $mark = $markRepo->findBy(['MatchInfo' => $matchInfo, 'Profile' => $profile]);
+                    if ($mark == null) {
+                        $mark = new Mark();
+                    }
                     $mark->setMatchInfo($matchInfo);
                     $mark->setWeappUserProfile($profile);
                     $mark->setSlug('match_info');
 
                     break;
+                default:
+                    $mark = new Mark();
+            }
+            if ($mark->getId()) {
+                $em->remove($mark);
+            } else {
+                $em->persist($mark);
             }
 
-            $em->persist($mark);
             $em->flush();
         } catch (\Exception $e) {
             return self::createFailureJSONResponse(-1, $e->getMessage());
