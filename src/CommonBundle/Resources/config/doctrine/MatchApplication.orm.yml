@@ -8,6 +8,11 @@ CommonBundle\Entity\MatchApplication:
             generator:
                 strategy: AUTO
     fields:
+        teamName:
+            type: string
+            nullable: true
+            options:
+                comment: 队名
         currentStatus:
             type: text
             nullable: true

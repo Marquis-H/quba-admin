@@ -198,9 +198,11 @@ class CommonService extends AbstractService
                     $parentData = null;
                     if ($parent = $obj->getParent()) {
                         $children = [];
+                        /** @var MatchApplication $value */
                         foreach ($parent->getChildren()->getValues() as $value) {
                             array_push($children, [
                                 'id' => $value->getId(),
+                                'name' => $value->getTeamName(),
                                 'currentStatus' => $value->getCurrentStatus(),
                                 'skill' => $value->getSkill(),
                                 'experience' => $value->getExperience(),
@@ -221,6 +223,7 @@ class CommonService extends AbstractService
                         }
                         $parentData = [
                             'id' => $parent->getId(),
+                            'name' => $parent->getTeamName(),
                             'currentStatus' => $parent->getCurrentStatus(),
                             'skill' => $parent->getSkill(),
                             'experience' => $parent->getExperience(),
@@ -241,6 +244,7 @@ class CommonService extends AbstractService
                     }
                     $output = [
                         'id' => $obj->getId(),
+                        'name' => $obj->getTeamName(),
                         'currentStatus' => $obj->getCurrentStatus(),
                         'skill' => $obj->getSkill(),
                         'experience' => $obj->getExperience(),

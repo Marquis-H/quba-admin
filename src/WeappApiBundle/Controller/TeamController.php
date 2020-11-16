@@ -73,7 +73,7 @@ class TeamController extends AbstractApiController
     }
 
     /**
-     * 创建或加入队伍
+     * 创建队伍
      * @Route("/create", methods={"POST"})
      *
      * @param Request $request
@@ -93,7 +93,7 @@ class TeamController extends AbstractApiController
 
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $request->request->all();
-        CommonTools::checkParams($params, ['currentStatus', 'skill', 'experience', 'people', 'mid']);
+        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'experience', 'people', 'mid']);
         /** @var MatchInfo $matchInfo */
         $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->findOneBy(['id' => $params['mid']]);
         if ($matchInfo == null) {
@@ -102,6 +102,7 @@ class TeamController extends AbstractApiController
 
         try {
             $matchApplication = new MatchApplication();
+            $matchApplication->setTeamName($params['teamName']);
             $matchApplication->setCurrentStatus($params['currentStatus']);
             $matchApplication->setSkill($params['skill']);
             $matchApplication->setExperience($params['experience']);

@@ -534,4 +534,33 @@ class MatchApplication
     {
         return $this->skills;
     }
+    /**
+     * @var string|null
+     */
+    private $teamName;
+
+
+    /**
+     * Set teamName.
+     *
+     * @param string|null $teamName
+     *
+     * @return MatchApplication
+     */
+    public function setTeamName($teamName = null)
+    {
+        $this->teamName = $teamName;
+
+        return $this;
+    }
+
+    /**
+     * Get teamName.
+     *
+     * @return string|null
+     */
+    public function getTeamName()
+    {
+        return $this->teamName;
+    }
 }
