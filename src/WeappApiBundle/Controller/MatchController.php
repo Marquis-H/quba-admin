@@ -45,12 +45,13 @@ class MatchController extends AbstractApiController
     public function list(Request $request)
     {
         $commonService = $this->container->get(CommonService::class);
+        $params = $request->query->all();
 
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $match = $em->getRepository('CommonBundle:MatchInfo')->findBy([], ['endAt' => 'desc']);
+        $matchInfos = $em->getRepository('CommonBundle:MatchInfo')->searchByCategory($params['cId'], "", $params['createdAtOrder']);
 
-        return self::createSuccessJSONResponse('success', $commonService->toDataModel($match));
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($matchInfos));
     }
 
     /**
@@ -102,8 +103,8 @@ class MatchController extends AbstractApiController
 
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $idleApplications = $em->getRepository('CommonBundle:MatchInfo')->searchByCategory($params['cId'], $params['isOnline'], $params['type'], $params['keyword'], $params['createdAtOrder']);
+        $matchInfos = $em->getRepository('CommonBundle:MatchInfo')->searchByCategory($params['cId'], $params['keyword'], $params['createdAtOrder']);
 
-        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
+        return self::createSuccessJSONResponse('success', $commonService->toDataModel($matchInfos));
     }
 }

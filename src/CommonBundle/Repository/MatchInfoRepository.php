@@ -23,12 +23,10 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @param $cId
      * @param $keyword
-     * @param $isOnline
-     * @param $type
      * @param $currentSortOrder
      * @return QueryBuilder|mixed
      */
-    public function searchByCategory($cId, $isOnline, $type, $keyword, $currentSortOrder)
+    public function searchByCategory($cId, $keyword, $currentSortOrder)
     {
         $result = $this->createQueryBuilder('q')
             ->leftJoin('q.MatchCategory', 'm')
@@ -40,18 +38,6 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('cId', $cId);
         }
 
-        if($isOnline != "null"){
-            $result = $result
-                ->andWhere('m.isOnline = :isOnline')
-                ->setParameter('isOnline', $isOnline);
-        }
-
-        if($type != 0){
-            $result = $result
-                ->andWhere('m.type = :type')
-                ->setParameter('type', $isOnline);
-        }
-
         if ($currentSortOrder != "null") {
             $result = $result
                 ->orderBy('q.createdAt', $currentSortOrder);
@@ -59,6 +45,7 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
 
         $result = $result
             ->setParameter('title', "%{$keyword}%")
+            ->addOrderBy('q.endAt', 'desc')
             ->getQuery()
             ->getResult();
         return $result;
