@@ -128,7 +128,8 @@ class CommonService extends AbstractService
                         'famousPhoto' => $obj->getFamousPhoto(),
                         'photos' => $obj->getPhotos(),
                         'marks' => count($marks),
-                        'profile' => $this->toDataModel($obj->getProfile())
+                        'profile' => $this->toDataModel($obj->getProfile()),
+                        'isTop' => $obj->getTopAt() != null
                     ];
                     break;
                 case $obj instanceof IdleProfile:
@@ -191,7 +192,8 @@ class CommonService extends AbstractService
                         'urls' => $obj->getUrls(),
                         'sponsorApplications' => count($matchApplication),
                         'matchCategory' => $this->toDataModel($obj->getMatchCategory()),
-                        'marks' => count($marks)
+                        'marks' => count($marks),
+                        'isTop' => $obj->getTopAt() != null
                     ];
                     break;
                 case $obj instanceof MatchApplication:
