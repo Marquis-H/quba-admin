@@ -11,6 +11,26 @@
     responsive
     class="card-table"
   >
+    <template slot="topAt" slot-scope="data">
+      <span v-if="data.item.topAt">
+        <b-btn
+          variant="success"
+          size="sm"
+          :block="true"
+          @click="changeTop(data.item.id, false)"
+          >取消置顶</b-btn
+        >
+      </span>
+      <span v-else>
+        <b-btn
+          variant="secondary"
+          size="sm"
+          :block="true"
+          @click="changeTop(data.item.id, true)"
+          >置顶</b-btn
+        >
+      </span>
+    </template>
     <template slot="tabs" slot-scope="data">
       <span>{{ data.item.tabs | getText("tabs", options, category) }}</span>
     </template>
@@ -126,6 +146,9 @@ export default {
           this.$emit('del', row)
         }
       })
+    },
+    changeTop(id, isTop) {
+      this.$emit('changeTop', id, isTop)
     }
   }
 }

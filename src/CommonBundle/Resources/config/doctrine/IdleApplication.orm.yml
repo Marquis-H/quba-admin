@@ -49,6 +49,11 @@ CommonBundle\Entity\IdleApplication:
                 comment: 封面图
         photos:
             type: array
+        topAt:
+            type: datetime
+            nullable: true
+            options:
+                comment: 置顶时间
         createdAt:
             type: datetime
             gedmo:

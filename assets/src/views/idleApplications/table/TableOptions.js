@@ -18,6 +18,12 @@ export const fields = () => {
     return [
         { label: 'ID', key: 'id', sortable: true, tdClass: 'align-middle' },
         {
+            label: '是否置顶',
+            key: 'topAt',
+            sortable: true,
+            tdClass: 'align-middle'
+        },
+        {
             label: '名称',
             key: 'title',
             sortable: true,

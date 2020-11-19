@@ -30,6 +30,11 @@ CommonBundle\Entity\MatchInfo:
         urls:
             type: string
             nullable: true
+        topAt:
+            type: datetime
+            nullable: true
+            options:
+                comment: 置顶时间
         createdAt:
             type: datetime
             gedmo:

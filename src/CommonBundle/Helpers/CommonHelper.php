@@ -167,6 +167,7 @@ class CommonHelper
                     'qualificationLimit' => $obj->getQualificationLimit(),
                     'files' => $obj->getFiles(),
                     'urls' => $obj->getUrls(),
+                    'topAt' => $obj->getTopAt() ? $obj->getTopAt()->format('Y-m-d H:i') : null,
                     'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i'),
                     'applications' => $this->toDataModel($obj->getMatchApplication())
                 ];
@@ -177,7 +178,7 @@ class CommonHelper
                     'experience' => $obj->getExperience(),
                     'people' => $obj->getPeople(),
                     'totalPeople' => $obj->getTotalPeople(),
-                    'joinEndAt' => $obj->getJoinEndAt()?$obj->getJoinEndAt()->format('Y-m-d H:i:s'):null,
+                    'joinEndAt' => $obj->getJoinEndAt() ? $obj->getJoinEndAt()->format('Y-m-d H:i:s') : null,
                     'isSponsor' => $obj->getIsSponsor(),
                     'skills' => $obj->getSkills(),
                     'matchExperience' => $obj->getMatchExperience(),
@@ -199,6 +200,7 @@ class CommonHelper
                     'remark' => $obj->getRemark(),
                     'category' => $obj->getIdleCategory()->getTitle(),
                     'profile' => $this->toDataModel($obj->getProfile()),
+                    'topAt' => $obj->getTopAt() ? $obj->getTopAt()->format('Y-m-d H:i') : null,
                     'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
                 ];
             } elseif ($obj instanceof IdleProfile) {

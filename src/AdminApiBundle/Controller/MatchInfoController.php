@@ -7,8 +7,11 @@ namespace AdminApiBundle\Controller;
 use CommonBundle\Entity\MatchInfo;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonHelper;
+use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\MatchInfoService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -137,5 +140,32 @@ class MatchInfoController extends AbstractApiController
         }
 
         return self::createSuccessJSONResponse('success', []);
+    }
+
+    /**
+     * @Route("/change_top", name="admin.match_info.change_top", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws ApiException
+     */
+    public function changeTop(Request $request)
+    {
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['id', 'isTop']);
+
+        $em = $this->getEntityManager();
+        $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->find($params['id']);
+        if ($matchInfo == null) {
+            return $this->createFailureJSONResponse(-1, '没有记录');
+        }
+
+        $matchInfo->setTopAt($params['isTop'] ? new \DateTime() : null);
+        $em->persist($matchInfo);
+        $em->flush();
+
+        return $this->createSuccessJSONResponse('success');
     }
 }

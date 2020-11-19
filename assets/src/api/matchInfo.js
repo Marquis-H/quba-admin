@@ -48,3 +48,15 @@ export function deleteMatchInfo(id, params = {}) {
         data: params
     })
 }
+
+/**
+ * 置顶
+ * @param {*} params
+ */
+export function changeTop(params = {}) {
+    return request({
+        url: `/match_info/change_top`,
+        method: 'post',
+        data: params
+    })
+}

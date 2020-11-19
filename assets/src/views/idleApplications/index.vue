@@ -26,6 +26,8 @@
           :data="usersData"
           :currentPage="listQuery.currentPage"
           :perPage="listQuery.perPage"
+          @changeTop="handleChangeTop"
+          @del="handleDel"
         />
       </div>
       <!-- Pagination -->
@@ -57,9 +59,11 @@
 <script>
 import ListFilter from './components/ListFilter'
 import ListTable from './components/ListTable'
-import { getIdleApplicationList } from '@/api/idleApplication'
+import { getIdleApplicationList, deleteIdleApplication, changeTop } from '@/api/idleApplication'
 import { listQuery, searchKeys, fields } from './table/TableOptions'
 import { filterOptions } from './filter/FilterOptions'
+import { notify } from '@/utils'
+const defaultSettings = require('../../settings.js')
 
 export default {
   name: 'MatchCategory',
@@ -105,7 +109,6 @@ export default {
     handleFilter () {
       this.getList()
     },
-
     filter (value) {
       const val = value.toLowerCase()
       const filtered = this.originalUsersData.filter(d => {
@@ -119,6 +122,23 @@ export default {
         )
       })
       this.usersData = filtered
+    },
+    handleChangeTop(id, isTop) {
+      changeTop({ id, isTop }).then(res => {
+        if (res.code === 0) { // 刷新页面
+          var index = this.usersData.findIndex(v => v.id === id)
+          this.usersData[index]['topAt'] = isTop
+        }
+      })
+    },
+    // 删除标签
+    handleDel (row) {
+      deleteIdleApplication(row.id, row).then((result) => {
+        notify(defaultSettings.successAlert, 'Success', '删除成功')
+        this.getList()
+      }).catch((e) => {
+        console.log(e)
+      })
     }
   }
 }

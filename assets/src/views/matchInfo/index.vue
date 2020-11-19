@@ -36,6 +36,7 @@
           :perPage="listQuery.perPage"
           @edit="showUserEditModal"
           @del="handleDel"
+          @changeTop="handleChangeTop"
         />
       </div>
       <!-- Pagination -->
@@ -78,7 +79,7 @@ import ListFilter from './components/ListFilter'
 import ListTable from './components/ListTable'
 import FormModal from './components/FormModal'
 import { notify } from '@/utils'
-import { getMatchInfoList, createMatchInfo, updateMatchInfo, deleteMatchInfo } from '@/api/matchInfo'
+import { getMatchInfoList, createMatchInfo, updateMatchInfo, deleteMatchInfo, changeTop } from '@/api/matchInfo'
 import { getMatchCategoryItems } from '@/api/matchCategory'
 import { listQuery, searchKeys, fields } from './table/TableOptions'
 import { formData } from './form/FormOptions'
@@ -253,6 +254,14 @@ export default {
         notify(defaultSettings.successAlert, 'Success', '更新成功')
       }).catch((e) => {
         console.log(e)
+      })
+    },
+    handleChangeTop(id, isTop) {
+      changeTop({ id, isTop }).then(res => {
+        if (res.code === 0) { // 刷新页面
+          var index = this.usersData.findIndex(v => v.id === id)
+          this.usersData[index]['topAt'] = isTop
+        }
       })
     },
     // 删除标签

@@ -172,7 +172,7 @@ Vue.component('dashboard-chart2', {
   extends: VueChartJs.Pie,
   mounted () {
     this.renderChart({
-      labels: ['主頁', '作品', '后台'],
+      labels: ['主頁', '二手闲置', '比赛'],
       datasets: [{
         data: [1225, 654, 211],
         backgroundColor: ['rgba(99,125,138,0.5)', 'rgba(28,151,244,0.5)', 'rgba(2,188,119,0.5)'],

@@ -360,4 +360,33 @@ class MatchInfo
     {
         return $this->MatchCategory;
     }
+    /**
+     * @var \DateTime|null
+     */
+    private $topAt;
+
+
+    /**
+     * Set topAt.
+     *
+     * @param \DateTime|null $topAt
+     *
+     * @return MatchInfo
+     */
+    public function setTopAt($topAt = null)
+    {
+        $this->topAt = $topAt;
+
+        return $this;
+    }
+
+    /**
+     * Get topAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getTopAt()
+    {
+        return $this->topAt;
+    }
 }
