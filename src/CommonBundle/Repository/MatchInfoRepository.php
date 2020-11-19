@@ -18,8 +18,8 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
     public function getQueryBuilder()
     {
         return $this->createQueryBuilder('q')
-            ->orderBy('q.createdAt', 'desc')
-            ->addOrderBy('q.topAt', 'desc');
+            ->orderBy('q.topAt', 'desc')
+            ->addOrderBy('q.endAt', 'desc');
     }
 
     /**
@@ -47,8 +47,8 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
 
         $result = $result
             ->setParameter('title', "%{$keyword}%")
+            ->orderBy('q.topAt', 'desc')
             ->addOrderBy('q.endAt', 'desc')
-            ->addOrderBy('q.topAt', 'desc')
             ->getQuery()
             ->getResult();
         return $result;

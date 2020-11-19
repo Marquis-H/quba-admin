@@ -29,7 +29,6 @@ class IdleController extends AbstractApiController
      * @Anonymous()
      * @param Request $request
      * @return JsonResponse
-     * @throws ApiException
      */
     public function idleCategory(Request $request)
     {
