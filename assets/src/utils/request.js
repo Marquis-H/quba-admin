@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 import router from '../router'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -76,6 +76,7 @@ service.interceptors.response.use(
   error => {
     const status = error.response.status
     if (status === 401 || status === 403) {
+      removeToken() // 移除token
       router.push({
         path: '/login'
       })
