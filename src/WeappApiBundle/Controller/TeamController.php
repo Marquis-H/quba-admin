@@ -93,7 +93,7 @@ class TeamController extends AbstractApiController
 
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $request->request->all();
-        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'experience', 'people', 'mid']);
+        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'skills', 'experience', 'people', 'mid']);
         /** @var MatchInfo $matchInfo */
         $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->findOneBy(['id' => $params['mid']]);
         if ($matchInfo == null) {
@@ -105,6 +105,7 @@ class TeamController extends AbstractApiController
             $matchApplication->setTeamName($params['teamName']);
             $matchApplication->setCurrentStatus($params['currentStatus']);
             $matchApplication->setSkill($params['skill']);
+            $matchApplication->setSkills($params['skills']);
             $matchApplication->setExperience($params['experience']);
             $matchApplication->setPeople($params['people']);
             $matchApplication->setJoinEndAt(new \DateTime($params['joinEndAt']));
