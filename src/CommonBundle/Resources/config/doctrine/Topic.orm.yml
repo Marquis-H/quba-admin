@@ -1,0 +1,45 @@
+CommonBundle\Entity\Topic:
+    type: entity
+    table: weapp_topic
+    repositoryClass: CommonBundle\Repository\TopicRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+        content:
+            type: text
+        category:
+            type: string
+        views:
+            type: integer
+        like:
+            type: integer
+        isEnable:
+            type: boolean
+        photos:
+            type: array
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        Publisher:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: publisher_id
+                referencedColumnName: id
+                onDelete: SET NULL
+    oneToMany:
+        TopicComment:
+            targetEntity: CommonBundle\Entity\TopicComment
+            mappedBy: Topic

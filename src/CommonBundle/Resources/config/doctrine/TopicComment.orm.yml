@@ -1,0 +1,47 @@
+CommonBundle\Entity\TopicComment:
+    type: entity
+    table: weapp_topic_comment
+    repositoryClass: CommonBundle\Repository\TopicCommentRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        comment:
+            type: text
+        level:
+            type: integer
+            length: 5
+            options:
+                comment: 层数
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+    oneToMany:
+        Childrens:
+            targetEntity: CommonBundle\Entity\TopicComment
+            mappedBy: Parent
+    manyToOne:
+        Topic:
+            targetEntity: CommonBundle\Entity\Topic
+            inversedBy: TopicComment
+            joinColumn:
+                name: topic_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        Profile:
+            targetEntity: CommonBundle\Entity\WeappUserProfile
+            joinColumn:
+                name: profile_id
+                referencedColumnName: id
+                onDelete: SET NULL
+        Parent:
+            targetEntity: CommonBundle\Entity\TopicComment
+            inversedBy: Childrens
+            joinColumn:
+                name: ParentId
+                referencedColumnName: id
+                onDelete: CASCADE
