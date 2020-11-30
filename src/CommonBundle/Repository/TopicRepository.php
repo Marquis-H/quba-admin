@@ -2,6 +2,8 @@
 
 namespace CommonBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * TopicRepository
  *
@@ -10,4 +12,11 @@ namespace CommonBundle\Repository;
  */
 class TopicRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->createQueryBuilder('q');
+    }
 }

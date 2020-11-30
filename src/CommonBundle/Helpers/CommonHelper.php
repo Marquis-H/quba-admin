@@ -25,6 +25,7 @@ use CommonBundle\Entity\Page;
 use CommonBundle\Entity\Professional;
 use CommonBundle\Entity\Review;
 use CommonBundle\Entity\Tab;
+use CommonBundle\Entity\Topic;
 use CommonBundle\Entity\WeappUser;
 use CommonBundle\Entity\WeappUserTicket;
 use CommonBundle\Entity\Works;
@@ -207,6 +208,19 @@ class CommonHelper
                 $output = [
                     'title' => $obj->getProfile()->getName(),
                     'status' => $obj->getStatus()
+                ];
+            } elseif ($obj instanceof Topic) {
+                $output = [
+                    'id' => $obj->getId(),
+                    'title' => $obj->getTitle(),
+                    'content' => $obj->getContent(),
+                    'category' => $obj->getCategory(),
+                    'views' => $obj->getViews(),
+                    'like' => $obj->getLikeNum(),
+                    'isEnable' => $obj->getIsEnable(),
+                    'photos' => $obj->getPhotos(),
+                    'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i'),
+                    'publisher' => $this->toDataModel($obj->getPublisher())
                 ];
             }
         }

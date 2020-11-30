@@ -48,6 +48,11 @@ class TopicComment
     private $Parent;
 
     /**
+     * @var int
+     */
+    private $likeNum = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -243,5 +248,29 @@ class TopicComment
     public function getParent()
     {
         return $this->Parent;
+    }
+
+    /**
+     * Set likeNum.
+     *
+     * @param int $likeNum
+     *
+     * @return TopicComment
+     */
+    public function setLikeNum($likeNum)
+    {
+        $this->likeNum = $likeNum;
+
+        return $this;
+    }
+
+    /**
+     * Get likeNum.
+     *
+     * @return int
+     */
+    public function getLikeNum()
+    {
+        return $this->likeNum;
     }
 }

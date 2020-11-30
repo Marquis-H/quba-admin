@@ -133,6 +133,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/topic',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/topic/index'),
+        name: 'Topic',
+        meta: { title: '话题管理', icon: 'ion ion-md-apps' }
+      }
+    ]
+  },
+  {
     path: '/weapp_user',
     component: Layout,
     children: [

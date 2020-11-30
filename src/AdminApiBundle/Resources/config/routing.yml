@@ -58,6 +58,11 @@ admin.match_info:
     type: annotation
     resource: "@AdminApiBundle/Controller/MatchInfoController.php"
 
+admin.topic:
+    prefix: /topic
+    type: annotation
+    resource: "@AdminApiBundle/Controller/TopicController.php"
+
 admin.banner:
     prefix: /banner
     type: annotation

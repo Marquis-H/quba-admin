@@ -35,7 +35,7 @@ class Topic
     /**
      * @var int
      */
-    private $like = 0;
+    private $likeNum = 0;
 
     /**
      * @var bool
@@ -182,30 +182,6 @@ class Topic
     }
 
     /**
-     * Set like.
-     *
-     * @param int $like
-     *
-     * @return Topic
-     */
-    public function setLike($like)
-    {
-        $this->like = $like;
-
-        return $this;
-    }
-
-    /**
-     * Get like.
-     *
-     * @return int
-     */
-    public function getLike()
-    {
-        return $this->like;
-    }
-
-    /**
      * Set isEnable.
      *
      * @param bool $isEnable
@@ -222,7 +198,8 @@ class Topic
     /**
      * Get isEnable.
      *
-     * @return bool
+     * @return bool        likeNum:
+            type: integer
      */
     public function getIsEnable()
     {
@@ -359,5 +336,29 @@ class Topic
     public function getPublisher()
     {
         return $this->Publisher;
+    }
+
+    /**
+     * Set likeNum.
+     *
+     * @param int $likeNum
+     *
+     * @return Topic
+     */
+    public function setLikeNum($likeNum)
+    {
+        $this->likeNum = $likeNum;
+
+        return $this;
+    }
+
+    /**
+     * Get likeNum.
+     *
+     * @return int
+     */
+    public function getLikeNum()
+    {
+        return $this->likeNum;
     }
 }

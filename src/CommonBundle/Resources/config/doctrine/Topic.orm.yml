@@ -16,7 +16,7 @@ CommonBundle\Entity\Topic:
             type: string
         views:
             type: integer
-        like:
+        likeNum:
             type: integer
         isEnable:
             type: boolean
