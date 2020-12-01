@@ -52,3 +52,8 @@ api.weapp_idle_message:
     prefix: /idle_message
     type: annotation
     resource: "@WeappApiBundle/Controller/IdleMessageController.php"
+
+api.weapp_topic:
+    prefix: /topic
+    type: annotation
+    resource: "@WeappApiBundle/Controller/TopicController.php"

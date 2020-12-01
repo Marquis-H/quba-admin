@@ -20,7 +20,7 @@ class TopicComment
     /**
      * @var int
      */
-    private $level;
+    private $level = 1;
 
     /**
      * @var \DateTime

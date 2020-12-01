@@ -20,6 +20,8 @@ use CommonBundle\Entity\Page;
 use CommonBundle\Entity\Professional;
 use CommonBundle\Entity\SayLoveMessage;
 use CommonBundle\Entity\SayLoveMessageComment;
+use CommonBundle\Entity\Topic;
+use CommonBundle\Entity\TopicComment;
 use CommonBundle\Entity\WeappUser;
 use CommonBundle\Entity\WeappUserProfile;
 use CommonBundle\Repository\MatchApplicationRepository;
@@ -284,6 +286,33 @@ class CommonService extends AbstractService
                         'saleCommentAt' => $obj->getSaleCommentAt() ? $obj->getSaleCommentAt()->format('Y-m-d H:i:s') : null,
                         'buyProfile' => $this->toDataModel($obj->getBuyProfile()),
                         'saleProfile' => $this->toDataModel($obj->getSaleProfile())
+                    ];
+                    break;
+                case $obj instanceof Topic:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'title' => $obj->getTitle(),
+                        'content' => $obj->getContent(),
+                        'category' => $obj->getCategory(),
+                        'views' => $obj->getViews(),
+                        'like' => $obj->getLikeNum(),
+                        'isEnable' => $obj->getIsEnable(),
+                        'photos' => $obj->getPhotos(),
+                        'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i'),
+                        'publisher' => $this->toDataModel($obj->getPublisher()),
+                        'comments' => $this->toDataModel($obj->getTopicComment())
+                    ];
+                    break;
+                case $obj instanceof TopicComment:
+                    $output = [
+                        'id' => $obj->getId(),
+                        'comment' => $obj->getComment(),
+                        'level' => $obj->getLevel(),
+                        'like' => $obj->getLikeNum(),
+                        'childrens' => $this->toDataModel($obj->getChildrens()->getValues()),
+                        'profile' => $this->toDataModel($obj->getProfile()),
+//                        'topic' => $this->toDataModel($obj->getTopic()),
+                        'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i')
                     ];
                     break;
             }
