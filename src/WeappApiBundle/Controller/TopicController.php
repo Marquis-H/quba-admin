@@ -10,6 +10,7 @@ use CommonBundle\Entity\WeappUser;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
+use CommonBundle\Services\WechatService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -77,6 +78,13 @@ class TopicController extends AbstractApiController
             throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
         }
 
+        // 检查comment
+        $wechatService = $this->get(WechatService::class);
+        $app = $wechatService->getApplication();
+        $result = $app->content_security->checkText($params['comment']);
+        if($result['errcode'] != 0){
+            throw new ApiException('内容违规', ApiCode::DATA_ERROR);
+        }
         $topicComment = new TopicComment();
         $topicComment->setComment($params['comment']);
         $topicComment->setTopic($topic);
