@@ -9,13 +9,17 @@ use CommonBundle\Entity\WeappUser;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
+use CommonBundle\Services\WechatService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
+use WeappApiBundle\Constants\ApiCode;
+use WeappApiBundle\Exceptions\WeappApiException;
 
 class LoveController extends AbstractApiController
 {
@@ -57,6 +61,14 @@ class LoveController extends AbstractApiController
         $em = $this->get('doctrine.orm.default_entity_manager');
         $love = new SayLoveMessage();
         try {
+
+            // 检查内容
+            $wechatService = $this->get(WechatService::class);
+            $app = $wechatService->getApplication();
+            $result = $app->content_security->checkText($params['content']);
+            if($result['errcode'] != 0){
+                throw new WeappApiException('内容违规', ApiCode::DATA_ERROR);
+            }
             $love->setSelfNickname($params['nickname']);
             $love->setSelfName($params['name']);
             $love->setSelfGender($accessor->getValue($params, "[gender]"));
@@ -134,6 +146,8 @@ class LoveController extends AbstractApiController
      * @throws ApiException
      * @throws ORMException
      * @throws OptimisticLockException
+     * @throws InvalidConfigException
+     * @throws WeappApiException
      */
     public function comment(Request $request)
     {
@@ -147,6 +161,13 @@ class LoveController extends AbstractApiController
             CommonTools::checkParams($params, ['id', 'comment']);
             $sayMessage = $em->getRepository('CommonBundle:SayLoveMessage')->find($params['id']);
 
+            // 检查内容
+            $wechatService = $this->get(WechatService::class);
+            $app = $wechatService->getApplication();
+            $result = $app->content_security->checkText($params['comment']);
+            if($result['errcode'] != 0){
+                throw new WeappApiException('内容违规', ApiCode::DATA_ERROR);
+            }
             $sayMessageComment = new SayLoveMessageComment();
             $sayMessageComment->setComment($params['comment']);
             $sayMessageComment->setSayLoveMessage($sayMessage);

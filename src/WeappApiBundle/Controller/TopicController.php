@@ -14,6 +14,7 @@ use CommonBundle\Services\WechatService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,6 +57,7 @@ class TopicController extends AbstractApiController
      * @throws WeappApiException
      * @throws ORMException
      * @throws OptimisticLockException
+     * @throws InvalidConfigException
      */
     public function addComment(Request $request)
     {
@@ -75,7 +77,7 @@ class TopicController extends AbstractApiController
         $topic = $em->getRepository('CommonBundle:Topic')->findOneBy(['id' => $params['id']]);
 
         if ($topic == null) {
-            throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
+            throw new WeappApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
         }
 
         // 检查comment
@@ -83,7 +85,7 @@ class TopicController extends AbstractApiController
         $app = $wechatService->getApplication();
         $result = $app->content_security->checkText($params['comment']);
         if($result['errcode'] != 0){
-            throw new ApiException('内容违规', ApiCode::DATA_ERROR);
+            throw new WeappApiException('内容违规', ApiCode::DATA_ERROR);
         }
         $topicComment = new TopicComment();
         $topicComment->setComment($params['comment']);
