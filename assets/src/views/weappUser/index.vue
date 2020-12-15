@@ -98,10 +98,10 @@ export default {
       getWeappUserList(this.listQuery)
         .then(res => {
           this.usersData = res.data.items
+          this.totalItems = res.data.total
           const listQuery = {
             currentPage: res.data.currentPage,
-            perPage: res.data.perPage,
-            total: res.data.total
+            perPage: res.data.perPage
           }
           this.listQuery = {
             ...this.listQuery,

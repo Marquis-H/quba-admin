@@ -115,7 +115,7 @@ export default {
       type: Object
     },
     category: {
-      type: Array
+      type: Array || Object
     }
   },
   filters: {

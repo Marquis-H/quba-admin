@@ -120,7 +120,8 @@ export default {
           this.usersData = items
           this.originalUsersData = items.slice(0)
           this.totalItems = total
-          this.listQuery = listQuery(currentPage, perPage)
+          this.listQuery.currentPage = currentPage
+          this.listQuery.perPage = perPage
         })
         .catch(e => {
           console.log(e)
