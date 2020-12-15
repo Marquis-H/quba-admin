@@ -31,10 +31,9 @@
       <b-card-body class="pt-0 pb-3">
         <div class="row">
           <div class="col-sm text-sm-left text-center pt-3">
-            <span
-              class="text-muted"
-              v-if="totalItems"
-            >Page {{ listQuery.currentPage }} of {{ totalPages }}</span>
+            <span class="text-muted" v-if="totalItems"
+              >Page {{ listQuery.currentPage }} of {{ totalPages }}</span
+            >
           </div>
           <div class="col-sm pt-3">
             <b-pagination
@@ -44,6 +43,7 @@
               :total-rows="totalItems"
               :per-page="listQuery.perPage"
               size="sm"
+              @change="handleFilter()"
             />
           </div>
         </div>
@@ -68,9 +68,6 @@ export default {
     ListTable
   },
   computed: {
-    totalItems () {
-      return this.listQuery.total
-    },
     totalPages () {
       return Math.ceil(this.totalItems / this.listQuery.perPage)
     }
@@ -89,7 +86,8 @@ export default {
       filterOptions: filterOptions(),
       fields: fields(),
       originalUsersData: [],
-      options: {}
+      options: {},
+      totalItems: 0
     }
   },
   created () {

@@ -28,7 +28,7 @@ class PageController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:Page');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, Page::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, Page::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

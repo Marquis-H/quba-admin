@@ -6,13 +6,11 @@
     :sort-desc.sync="sortDesc"
     :striped="true"
     :bordered="true"
-    :current-page="currentPage"
-    :per-page="perPage"
     responsive
     class="card-table"
   >
     <template slot="description" slot-scope="data">
-      <span v-if="data.item.description">{{data.item.description}}</span>
+      <span v-if="data.item.description">{{ data.item.description }}</span>
       <span v-else>-</span>
     </template>
     <template slot="actions" slot-scope="data">
@@ -24,11 +22,16 @@
       >
         <i class="ion ion-md-create"></i>
       </b-btn>
-      <b-dropdown variant="default btn-xs icon-btn md-btn-flat hide-arrow" :right="!isRTL">
+      <b-dropdown
+        variant="default btn-xs icon-btn md-btn-flat hide-arrow"
+        :right="!isRTL"
+      >
         <template slot="button-content">
           <i class="ion ion-ios-settings"></i>
         </template>
-        <b-dropdown-item href="javascript:void(0)" @click="del(data.item)">刪除</b-dropdown-item>
+        <b-dropdown-item href="javascript:void(0)" @click="del(data.item)"
+          >刪除</b-dropdown-item
+        >
       </b-dropdown>
     </template>
   </b-table>

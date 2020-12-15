@@ -13,6 +13,12 @@
         "psr-4": { "Tests\\": "tests/" },
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Marquis-H/wechat.git"
+        }
+    ],
     "require": {
         "php": ">=7.2",
         "ext-redis": "*",
@@ -29,8 +35,8 @@
         "knplabs/knp-snappy-bundle": "^1.7",
         "lexik/jwt-authentication-bundle": "^2.4",
         "liip/imagine-bundle": "^1.9.1",
+        "marquis/wechat": "4.1.x-dev",
         "nelmio/cors-bundle": "^1.5",
-        "overtrue/wechat": "~4.1",
         "phpoffice/phpspreadsheet": "^1.11",
         "qiniu/php-sdk": "^7.2",
         "sensio/distribution-bundle": "^5.0.19",

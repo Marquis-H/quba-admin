@@ -51,6 +51,7 @@
               v-model="listQuery.currentPage"
               :total-rows="totalItems"
               :per-page="listQuery.perPage"
+              @change="handleFilter()"
               size="sm"
             />
           </div>
@@ -90,9 +91,6 @@ export default {
     FormModal
   },
   computed: {
-    totalItems () {
-      return this.usersData.length
-    },
     totalPages () {
       return Math.ceil(this.totalItems / this.listQuery.perPage)
     }
@@ -107,7 +105,8 @@ export default {
       filterOptions: filterOptions(),
       fields: fields(),
       originalUsersData: [],
-      options: {}
+      options: {},
+      totalItems: 0
     }
   },
   created () {
@@ -117,8 +116,11 @@ export default {
     getList () {
       getCollegeList(this.listQuery)
         .then(res => {
-          this.usersData = res.data.items
-          this.originalUsersData = res.data.items.slice(0)
+          const { currentPage, items, perPage, total } = res.data
+          this.usersData = items
+          this.originalUsersData = items.slice(0)
+          this.totalItems = total
+          this.listQuery = listQuery(currentPage, perPage)
         })
         .catch(e => {
           console.log(e)

@@ -50,6 +50,7 @@
               class="justify-content-center justify-content-sm-end m-0"
               v-if="totalItems"
               v-model="listQuery.currentPage"
+              @change="handleFilter()"
               :total-rows="totalItems"
               :per-page="listQuery.perPage"
               size="sm"
@@ -92,9 +93,6 @@ export default {
     FormModal
   },
   computed: {
-    totalItems () {
-      return this.usersData.length
-    },
     totalPages () {
       return Math.ceil(this.totalItems / this.listQuery.perPage)
     }
@@ -111,7 +109,8 @@ export default {
       originalUsersData: [],
       options: {
         'colleges': []
-      }
+      },
+      totalItems: 0
     }
   },
   created () {
@@ -121,8 +120,13 @@ export default {
     getList () {
       getProfessionalList(this.listQuery)
         .then(res => {
-          this.usersData = res.data.items
-          this.originalUsersData = res.data.items.slice(0)
+          this.$nextTick(function() {
+            const { currentPage, items, perPage, total } = res.data
+            this.usersData = items
+            this.originalUsersData = items.slice(0)
+            this.totalItems = total
+            this.listQuery = listQuery(currentPage, perPage)
+          })
         })
         .catch(e => {
           console.log(e)

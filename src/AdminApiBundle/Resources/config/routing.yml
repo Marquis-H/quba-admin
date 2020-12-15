@@ -63,6 +63,11 @@ admin.topic:
     type: annotation
     resource: "@AdminApiBundle/Controller/TopicController.php"
 
+admin.topic_comment:
+    prefix: /topic_comment
+    type: annotation
+    resource: "@AdminApiBundle/Controller/TopicMessageController.php"
+
 admin.banner:
     prefix: /banner
     type: annotation

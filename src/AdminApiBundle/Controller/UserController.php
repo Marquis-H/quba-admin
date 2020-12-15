@@ -87,7 +87,7 @@ class UserController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:FosUser');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, FosUser::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, FosUser::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

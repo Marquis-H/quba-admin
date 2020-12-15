@@ -1,9 +1,9 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable indent */
-export const listQuery = () => {
+export const listQuery = (currentPage = 1, perPage = 10) => {
     return {
-        currentPage: 1,
-        perPage: 20,
+        currentPage: currentPage,
+        perPage: perPage,
         filters: {
             title: undefined
         }

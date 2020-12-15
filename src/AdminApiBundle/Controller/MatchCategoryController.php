@@ -56,7 +56,7 @@ class MatchCategoryController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:MatchCategory');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, MatchCategory::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, MatchCategory::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

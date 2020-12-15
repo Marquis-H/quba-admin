@@ -76,3 +76,10 @@ services:
         arguments:
             - '%SUBMAIL_APPID%'
             - '%SUBMAIL_APPKEY%'
+
+    ### Services ###
+    CommonBundle\Services\WechatService:
+        arguments:
+            - "%app_id%"
+            - "%app_secret%"
+            - "%kernel.logs_dir%/weapp.log"

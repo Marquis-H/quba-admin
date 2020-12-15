@@ -29,7 +29,7 @@ class IdleApplicationController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:IdleApplication');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, IdleApplication::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, IdleApplication::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

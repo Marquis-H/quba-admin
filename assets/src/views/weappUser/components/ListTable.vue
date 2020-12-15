@@ -6,7 +6,6 @@
     :sort-desc.sync="sortDesc"
     :striped="true"
     :bordered="true"
-    :per-page="perPage"
     responsive
     class="card-table"
   >

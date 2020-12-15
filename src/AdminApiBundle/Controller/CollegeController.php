@@ -55,7 +55,7 @@ class CollegeController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:College');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, College::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, College::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

@@ -52,7 +52,7 @@ class ProfessionalController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:Professional');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, Professional::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, Professional::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }

@@ -28,7 +28,7 @@ class BannerController extends AbstractApiController
         $repo = $this->getEntityManager()->getRepository('CommonBundle:Banner');
 
         $queryBuild = $repo->getQueryBuilder();
-        $result = $common->filterPagination($request->query->get('filters'), 1, 10, $queryBuild, Banner::class);
+        $result = $common->filterPagination($request->query->get('filters'), $request->query->get('currentPage'), $request->query->get('perPage'), $queryBuild, Banner::class);
 
         return $this->createSuccessJSONResponse('success', $result);
     }
