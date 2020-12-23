@@ -11,6 +11,12 @@
     responsive
     class="card-table"
   >
+    <template slot="url" slot-scope="data">
+      <span v-if="data.item.url">
+        {{ data.item.url }}
+      </span>
+      <span v-else>-</span>
+    </template>
     <template slot="file" slot-scope="data">
       <a
         v-if="data.item.file.length > 0"

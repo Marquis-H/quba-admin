@@ -46,7 +46,8 @@ class BannerController extends AbstractApiController
         $collectionConstraint = new Collection([
             'title' => [],
             'file' => [],
-            'slug' => []
+            'slug' => [],
+            'url' => []
         ]);
 
         $errors = $validator->validate($data, $collectionConstraint);
@@ -89,7 +90,8 @@ class BannerController extends AbstractApiController
             'id' => [],
             'title' => [],
             'file' => [],
-            'slug' => []
+            'slug' => [],
+            'url' => []
         ]);
 
         $errors = $validator->validate($data, $collectionConstraint);

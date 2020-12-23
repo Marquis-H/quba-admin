@@ -118,6 +118,7 @@ class CommonHelper
                     'title' => $obj->getTitle(),
                     'file' => $obj->getFile(),
                     'slug' => $obj->getSlug(),
+                    'url' => $obj->getUrl(),
                     'createdAt' => $obj->getCreatedAt()->format('Y-m-d H:i')
                 ];
             } elseif ($obj instanceof Page) {

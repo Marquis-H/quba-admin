@@ -30,6 +30,12 @@ export const fields = () => {
             tdClass: 'align-middle'
         },
         {
+            label: '链接',
+            key: 'url',
+            sortable: true,
+            tdClass: 'align-middle'
+        },
+        {
             label: '文件',
             key: 'file',
             sortable: true,

@@ -6,6 +6,7 @@ import store from '../../../store'
 export const formData = {
     title: '',
     slug: '',
+    url: '',
     file: []
 }
 
@@ -26,6 +27,13 @@ export const formItem = (options) => {
             component: 'Input',
             state: true,
             required: true
+        },
+        url: {
+            label: '链接',
+            placeholder: '请填写',
+            component: 'Input',
+            state: false,
+            required: false
         },
         file: {
             label: 'Banner',
