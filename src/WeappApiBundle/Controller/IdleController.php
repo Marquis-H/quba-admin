@@ -101,7 +101,7 @@ class IdleController extends AbstractApiController
         }
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();
-        CommonTools::checkParams($params, ['name', 'category', 'number', 'oldDeep', 'originalCost', 'currentCost', 'contactType', 'contact', 'description']);
+        CommonTools::checkParams($params, ['name', 'category', 'number', 'originalCost', 'currentCost', 'contactType', 'contact', 'description']);
 
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
@@ -120,7 +120,7 @@ class IdleController extends AbstractApiController
             $idle->setContactType($params['contactType']);
             $idle->setContact($params['contact']);
             $idle->setDescription($params['description']);
-            $idle->setFamousPhoto($accessor->getValue($params, '[famousPhoto][0][file]'));
+            //$idle->setFamousPhoto($accessor->getValue($params, '[famousPhoto][0][file]'));
             $idle->setPhotos($accessor->getValue($params, '[photos]'));
             $idle->setProfile($profile);
 
