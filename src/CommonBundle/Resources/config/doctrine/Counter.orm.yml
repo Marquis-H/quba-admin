@@ -1,0 +1,19 @@
+CommonBundle\Entity\Counter:
+    type: entity
+    table: weapp_counter
+    repositoryClass: CommonBundle\Repository\CounterRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        slug:
+            type: integer
+        counter:
+            type: integer
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
