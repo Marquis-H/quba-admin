@@ -85,7 +85,7 @@ class MatchApplication
     /**
      * @var bool
      */
-    private $isLock;
+    private $isLock = false;
 
     /**
      * Get id.
