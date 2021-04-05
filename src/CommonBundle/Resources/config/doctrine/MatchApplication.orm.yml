@@ -65,6 +65,10 @@ CommonBundle\Entity\MatchApplication:
             nullable: true
             options:
                 comment: 联系方式
+        isLock:
+            type: boolean
+            options:
+                comment: 是否锁定
         createdAt:
             type: datetime
             gedmo:

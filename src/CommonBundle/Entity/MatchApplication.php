@@ -82,6 +82,10 @@ class MatchApplication
      */
     private $Profile;
 
+    /**
+     * @var bool
+     */
+    private $isLock;
 
     /**
      * Get id.
@@ -562,5 +566,29 @@ class MatchApplication
     public function getTeamName()
     {
         return $this->teamName;
+    }
+
+    /**
+     * Set isLock.
+     *
+     * @param bool $isLock
+     *
+     * @return MatchApplication
+     */
+    public function setIsLock($isLock)
+    {
+        $this->isLock = $isLock;
+
+        return $this;
+    }
+
+    /**
+     * Get isLock.
+     *
+     * @return bool
+     */
+    public function getIsLock()
+    {
+        return $this->isLock;
     }
 }

@@ -201,7 +201,7 @@ class IdleController extends AbstractApiController
             $idleProfile->setIdleApplication($idleApplication);
             $idleProfile->setTradeAt(new \DateTime());
             $idleProfile->setReceipt($idleApplicationService->buildOrderReceiptNumber($idleApplication->getId()));
-            $idleApplication->setStatus(IdleStatus::Doing);
+           // $idleApplication->setStatus(IdleStatus::Doing);
 
             $em->persist($idleApplication);
             $em->persist($idleProfile);

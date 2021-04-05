@@ -32,7 +32,10 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
     {
         $result = $this->createQueryBuilder('q')
             ->leftJoin('q.MatchCategory', 'm')
-            ->where('q.title LIKE :title');
+            ->where('q.title LIKE :title')
+            ->setParameter('title', "%{$keyword}%")
+            ->orderBy('q.topAt', 'desc')
+            ->addOrderBy('q.endAt', 'desc');
 
         if ($cId != 0) {
             $result = $result
@@ -42,13 +45,10 @@ class MatchInfoRepository extends \Doctrine\ORM\EntityRepository
 
         if ($currentSortOrder != "null") {
             $result = $result
-                ->orderBy('q.createdAt', $currentSortOrder);
+                ->addOrderBy('q.createdAt', $currentSortOrder);
         }
 
         $result = $result
-            ->setParameter('title', "%{$keyword}%")
-            ->orderBy('q.topAt', 'desc')
-            ->addOrderBy('q.endAt', 'desc')
             ->getQuery()
             ->getResult();
         return $result;

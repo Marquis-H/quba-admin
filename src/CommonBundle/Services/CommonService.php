@@ -214,6 +214,7 @@ class CommonService extends AbstractService
                                 'totalPeople' => $value->getTotalPeople(),
                                 'joinEndAt' => $value->getJoinEndAt() ? $value->getJoinEndAt()->format('Y-m-d') : null,
                                 'isSponsor' => $value->getIsSponsor(),
+                                'isLock' => $value->getIsLock(),
                                 'skills' => $value->getSkills(),
                                 'matchExperience' => $value->getMatchExperience(),
                                 'contact' => $value->getContact(),
@@ -235,6 +236,7 @@ class CommonService extends AbstractService
                             'totalPeople' => $parent->getTotalPeople(),
                             'joinEndAt' => $parent->getJoinEndAt() ? $parent->getJoinEndAt()->format('Y-m-d') : null,
                             'isSponsor' => $parent->getIsSponsor(),
+                            'isLock' => $parent->getIsLock(),
                             'skills' => $parent->getSkills(),
                             'matchExperience' => $parent->getMatchExperience(),
                             'contact' => $parent->getContact(),
@@ -263,6 +265,7 @@ class CommonService extends AbstractService
                         'profile' => $this->toDataModel($obj->getProfile()),
                         'childrens' => $obj->getChildren()->count(),
                         'children' => $this->toDataModel($obj->getChildren()),
+                        'isLock' => $obj->getIsLock(),
                         'parent' => $parentData,
                         'createdAt' => $obj->getCreatedAt()->format('Y-m-d')
                     ];

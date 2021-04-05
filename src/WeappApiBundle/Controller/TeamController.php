@@ -11,6 +11,8 @@ use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -93,7 +95,7 @@ class TeamController extends AbstractApiController
 
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $request->request->all();
-        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'skills', 'experience', 'people', 'mid']);
+        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'skills', 'people', 'mid']);
         /** @var MatchInfo $matchInfo */
         $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->findOneBy(['id' => $params['mid']]);
         if ($matchInfo == null) {
@@ -106,7 +108,7 @@ class TeamController extends AbstractApiController
             $matchApplication->setCurrentStatus($params['currentStatus']);
             $matchApplication->setSkill($params['skill']);
             $matchApplication->setSkills($params['skills']);
-            $matchApplication->setExperience($params['experience']);
+//            $matchApplication->setExperience($params['experience']);
             $matchApplication->setPeople($params['people']);
             $matchApplication->setJoinEndAt(new \DateTime($params['joinEndAt']));
             $matchApplication->setIsSponsor(true);
@@ -170,5 +172,73 @@ class TeamController extends AbstractApiController
         }
 
         return self::createSuccessJSONResponse('success');
+    }
+
+    /**
+     * 从队伍中移除
+     * @Route("/remove", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function removeTeam(Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['aid']);
+        /** @var MatchApplication $matchApplication */
+        $matchApplication = $em->getRepository('CommonBundle:MatchApplication')->findOneBy(['id' => $params['aid']]);
+        if ($matchApplication == null) {
+            throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
+        }
+        $isSponsor = $matchApplication->getIsSponsor();
+        if ($matchApplication->getIsSponsor()) { // 发起者，解散队伍
+            foreach ($matchApplication->getChildren()->getValues() as $value) {
+                $em->remove($value);
+            }
+        } else {
+            $parent = $matchApplication->getParent();
+            $parent->setTotalPeople($parent->getTotalPeople() - 1);
+            $em->persist($parent);
+        }
+        $em->remove($matchApplication);
+        $em->flush();
+
+        return $this->createSuccessJSONResponse('success', [
+            'isSponsor' => $isSponsor
+        ]);
+    }
+
+    /**
+     * 锁定队伍
+     * @Route("/lock", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ApiException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function lockTeam(Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['aid']);
+        /** @var MatchApplication $matchApplication */
+        $matchApplication = $em->getRepository('CommonBundle:MatchApplication')->findOneBy(['id' => $params['aid']]);
+        if ($matchApplication == null && $matchApplication->getIsSponsor()) {
+            throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
+        }
+
+        $matchApplication->setIsLock(true);
+        $em->persist($matchApplication);
+        $em->flush();
+
+        return $this->createSuccessJSONResponse('success');
     }
 }

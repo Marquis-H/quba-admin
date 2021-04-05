@@ -45,6 +45,7 @@ CommonBundle\Entity\IdleApplication:
             nullable: true
         famousPhoto:
             type: string
+            nullable: true
             options:
                 comment: 封面图
         photos:
