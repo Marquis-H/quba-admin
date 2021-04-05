@@ -70,43 +70,29 @@
             <b-btn
               variant="default"
               class="md-btn-flat"
-              :class="{ active: displayRange === 1 }"
-              @click="displayRange = 1"
-              >本日</b-btn
+              :class="{ active: displayRange === 7 }"
+              @click="displayRange = 7"
+              >近7天</b-btn
             >
             <b-btn
               variant="default"
               class="md-btn-flat"
-              :class="{ active: displayRange === 6 }"
-              @click="displayRange = 6"
-              >一周</b-btn
-            >
-            <b-btn
-              variant="default"
-              class="md-btn-flat"
-              :class="{ active: displayRange === 12 }"
-              @click="displayRange = 12"
-              >一個月</b-btn
-            >
-            <b-btn
-              variant="default"
-              class="md-btn-flat"
-              :class="{ active: displayRange === 36 }"
-              @click="displayRange = 36"
-              >三個月</b-btn
+              :class="{ active: displayRange === 15 }"
+              @click="displayRange = 15"
+              >近15天</b-btn
             >
           </b-btn-group>
         </div>
       </b-card-header>
       <hr class="border-light mb-0" />
-      <div class="row no-gutters row-bordered row-border-light">
+      <div class="row no-gutters row-bordered row-border-light" style="vis">
         <div class="d-flex col-md-8 col-lg-12 col-xl-8 align-items-center p-4">
-          <dashboard-chart1 class="w-100" :height="230" />
+          <dashboard-chart1 :chart-data="line" class="w-100" :height="230" />
         </div>
 
         <!-- Sources -->
         <div class="col-md-4 col-lg-12 col-xl-4 px-4 pt-4 pb-4">
-          <dashboard-chart2 :height="230" />
+          <dashboard-chart2 :chart-data="pie" :height="230" />
         </div>
         <!-- / Sources -->
       </div>
@@ -118,29 +104,14 @@
 <script>
 import Vue from 'vue'
 import VueChartJs from 'vue-chartjs'
-import { getDashboardInfo } from '@/api/dashboard'
+import { getDashboardInfo, getDashboardLine } from '@/api/dashboard'
 
 Vue.component('dashboard-chart1', {
   extends: VueChartJs.Line,
+  mixins: [VueChartJs.mixins.reactiveProp],
+  props: ['chartdata'],
   mounted () {
-    this.renderChart({
-      labels: ['2017-03', '2017-04', '2017-05', '2017-06', '2017-07', '2017-08', '2017-09', '2017-10', '2017-11', '2017-12', '2018-01', '2018-02'],
-      datasets: [{
-        label: 'PV',
-        data: [14, 37, 30, 46, 80, 42, 33, 13, 25, 6, 88, 96],
-        borderWidth: 1,
-        backgroundColor: 'rgba(38, 180, 255, 0.1)',
-        borderColor: '#26B4FF',
-        fill: false
-      }, {
-        label: 'IP',
-        data: [56, 17, 19, 96, 73, 46, 67, 40, 77, 43, 64, 54],
-        borderWidth: 1,
-        borderDash: [5, 5],
-        backgroundColor: 'rgba(136, 151, 170, 0.1)',
-        borderColor: '#8897aa'
-      }]
-    }, {
+    this.renderChart(this.chartdata, {
       scales: {
         xAxes: [{
           gridLines: {
@@ -170,16 +141,10 @@ Vue.component('dashboard-chart1', {
 
 Vue.component('dashboard-chart2', {
   extends: VueChartJs.Pie,
+  mixins: [VueChartJs.mixins.reactiveProp],
+  props: ['chartdata'],
   mounted () {
-    this.renderChart({
-      labels: ['主頁', '二手闲置', '比赛'],
-      datasets: [{
-        data: [1225, 654, 211],
-        backgroundColor: ['rgba(99,125,138,0.5)', 'rgba(28,151,244,0.5)', 'rgba(2,188,119,0.5)'],
-        borderColor: ['#647c8a', '#2196f3', '#02bc77'],
-        borderWidth: 1
-      }]
-    }, {
+    this.renderChart(this.chartdata, {
       scales: {
         xAxes: [{
           display: false
@@ -211,11 +176,14 @@ export default {
       dashboardInfo: {
         statistics: {} // 总数据
       },
-      displayRange: 12
+      displayRange: 7,
+      line: null,
+      pie: null
     }
   },
   created () {
     this.getDashboard()
+    this.getDashboard2()
   },
   mounted () {
     const charts = this.$children.filter(component => /-chart\d+$/.test(component.$options._componentTag))
@@ -228,6 +196,11 @@ export default {
     // For performance reasons resize charts on delayed resize event
     this.layoutHelpers.on('resize.dashboard', resizeCharts)
   },
+  watch: {
+    displayRange: function(n, o) {
+      this.getDashboard2()
+    }
+  },
   beforeDestroy () {
     this.layoutHelpers.off('resize.dashboard')
   },
@@ -236,6 +209,79 @@ export default {
       return new Promise((resolve, reject) => {
         getDashboardInfo().then(res => {
           this.dashboardInfo = res.data
+          resolve(true)
+        }).catch(err => {
+          console.log(err)
+          reject(err)
+        })
+      })
+    },
+    getDashboard2() {
+      var that = this
+      return new Promise((resolve, reject) => {
+        getDashboardLine({ day: this.displayRange }).then(res => {
+          console.log(res)
+          var line = res.data['line']
+          var pie = res.data['pie']
+          var lineDate = []
+          var linepv = []
+          var lineuv = []
+          var lineTotal = []
+
+          line.forEach(v => {
+            lineDate.push(v['list'][0]['ref_date'])
+            linepv.push(v['list'][0]['share_pv'])
+            lineuv.push(v['list'][0]['share_uv'])
+            lineTotal.push(v['list'][0]['visit_total'])
+          })
+          that.line = {
+            labels: lineDate.reverse(),
+            datasets: [{
+              label: 'PV',
+              data: linepv.reverse(),
+              borderWidth: 1,
+              backgroundColor: 'rgba(38, 180, 255, 0.1)',
+              borderColor: '#26B4FF',
+              fill: false
+            }, {
+              label: 'UV',
+              data: lineuv.reverse(),
+              borderWidth: 1,
+              borderDash: [5, 5],
+              backgroundColor: 'rgba(136, 151, 170, 0.1)',
+              borderColor: '#8897aa'
+            }, {
+              label: '访问总数',
+              data: lineTotal.reverse(),
+              borderWidth: 1,
+              borderDash: [5, 5]
+            }]
+          }
+          var pieData = [0, 0, 0]
+          pie.forEach(v => {
+            v['list'].forEach(list => {
+              switch (list['page_path']) {
+                case 'pages/index/index':
+                  pieData[0] += list['page_visit_pv']
+                  break
+                case 'pages/idle/index':
+                  pieData[1] += list['page_visit_pv']
+                  break
+                case 'pages/team/index':
+                  pieData[2] += list['page_visit_pv']
+                  break
+              }
+            })
+          })
+          that.pie = {
+            labels: ['主頁', '二手闲置', '比赛'],
+            datasets: [{
+              data: pieData,
+              backgroundColor: ['rgba(99,125,138,0.5)', 'rgba(28,151,244,0.5)', 'rgba(2,188,119,0.5)'],
+              borderColor: ['#647c8a', '#2196f3', '#02bc77'],
+              borderWidth: 1
+            }]
+          }
           resolve(true)
         }).catch(err => {
           console.log(err)
