@@ -48,8 +48,8 @@
     </template>
     <!-- 队伍 -->
     <template slot="team" slot-scope="data">
-      <b-button size="sm" @click="data.toggleDetails" class="mr-2">
-        {{ data.detailsShowing ? "关闭" : "查看" }}
+      <b-button size="sm" @click="exportData(data.item.id)" class="mr-2">
+        下载名单
       </b-button>
     </template>
     <template #row-details="data">
@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import { exportData } from '@/api/matchInfo'
+
 export default {
   name: 'user-table',
   data () {
@@ -123,12 +125,21 @@ export default {
       var data = ''
       data = data + options.onlineOrOffline.find(v => v.value === value[0]).text
       data = data + '-' + options.types.find(v => v.value === value[1]).text
-      data = data + '-' + category[value[0]][value[1]].find(v => v.value === value[2]).text
+      if (category[value[0]][value[1]].find(v => v.value === value[2])) {
+        data = data + '-' + category[value[0]][value[1]].find(v => v.value === value[2]).text
+      }
 
       return data
     }
   },
   methods: {
+    exportData(id) {
+      exportData({ id: id }).then(res => {
+        if (res.code === 0) {
+          window.open(res.data.url)
+        }
+      })
+    },
     showUserEditModal (row) {
       this.$emit('edit', row)
     },

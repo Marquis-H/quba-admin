@@ -60,3 +60,15 @@ export function changeTop(params = {}) {
         data: params
     })
 }
+
+/**
+ * 导出
+ * @param {*} params
+ */
+export function exportData(params = {}) {
+    return request({
+        url: `/match_info/export`,
+        method: 'post',
+        data: params
+    })
+}

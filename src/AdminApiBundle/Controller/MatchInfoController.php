@@ -4,10 +4,12 @@
 namespace AdminApiBundle\Controller;
 
 
+use CommonBundle\Entity\MatchApplication;
 use CommonBundle\Entity\MatchInfo;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonHelper;
 use CommonBundle\Helpers\CommonTools;
+use CommonBundle\Helpers\ExcelHelper;
 use CommonBundle\Services\MatchInfoService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
@@ -167,5 +169,46 @@ class MatchInfoController extends AbstractApiController
         $em->flush();
 
         return $this->createSuccessJSONResponse('success');
+    }
+
+    /**
+     * @Route("/export", name="admin.match_info.export", methods={"POST"})
+     *
+     * @param Request $request
+     * @return string|JsonResponse
+     * @throws ApiException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function export(Request $request)
+    {
+        $params = $request->request->all();
+        CommonTools::checkParams($params, ['id']);
+
+        $em = $this->getEntityManager();
+        $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->find($params['id']);
+        if ($matchInfo == null) {
+            return $this->createFailureJSONResponse(-1, '没有记录');
+        }
+        $matchApplications = $em->getRepository('CommonBundle:MatchApplication')->findBy(['MatchInfo' => $params['id'], 'isSponsor' => true]);
+
+        $cols = ['团队名', '队长'];
+        $data = [];
+        foreach ($matchApplications as $matchApplication) {
+            $profile = $matchApplication->getProfile();
+            $d = [$matchApplication->getTeamName(), $profile->getName() . "（{$profile->getMobile()}）"];
+            /** @var MatchApplication $value */
+            foreach ($matchApplication->getChildren()->getValues() as $value) {
+                array_push($d, $value->getProfile()->getName() . "（{$value->getContact()}）");
+            }
+
+            array_push($data, $d);
+        }
+
+        $excelHelper = new ExcelHelper();
+
+        return self::createSuccessJSONResponse('success', [
+            'url' => $this->getParameter('api_domain') . '/' . $excelHelper->exportExcel($cols, $data, $matchInfo->getTitle() . "人员表")
+        ]);
     }
 }

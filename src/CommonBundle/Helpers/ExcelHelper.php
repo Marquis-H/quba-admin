@@ -45,6 +45,13 @@ class ExcelHelper
             $i++;
         }
 
+        foreach (range('A', $spreadsheet->getActiveSheet()->getHighestDataColumn()) as $col) {
+            $spreadsheet
+                ->getActiveSheet()
+                ->getColumnDimension($col)
+                ->setAutoSize(true);
+        }
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $title . '.xlsx"');
         header('Cache-Control: max-age=0');
