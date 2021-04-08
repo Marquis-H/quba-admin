@@ -95,7 +95,7 @@ class TeamController extends AbstractApiController
 
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $request->request->all();
-        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'skill', 'skills', 'people', 'mid']);
+        CommonTools::checkParams($params, ['teamName', 'currentStatus', 'people', 'mid']);
         /** @var MatchInfo $matchInfo */
         $matchInfo = $em->getRepository('CommonBundle:MatchInfo')->findOneBy(['id' => $params['mid']]);
         if ($matchInfo == null) {
