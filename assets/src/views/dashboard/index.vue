@@ -109,7 +109,14 @@ import { getDashboardInfo, getDashboardLine } from '@/api/dashboard'
 Vue.component('dashboard-chart1', {
   extends: VueChartJs.Line,
   mixins: [VueChartJs.mixins.reactiveProp],
-  props: ['chartdata'],
+  props: {
+    chartdata: {
+      type: Object,
+      default: function () {
+        return { }
+      }
+    }
+  },
   mounted () {
     this.renderChart(this.chartdata, {
       scales: {
@@ -142,7 +149,14 @@ Vue.component('dashboard-chart1', {
 Vue.component('dashboard-chart2', {
   extends: VueChartJs.Pie,
   mixins: [VueChartJs.mixins.reactiveProp],
-  props: ['chartdata'],
+  props: {
+    chartdata: {
+      type: Object,
+      default: function () {
+        return { }
+      }
+    }
+  },
   mounted () {
     this.renderChart(this.chartdata, {
       scales: {
@@ -177,8 +191,14 @@ export default {
         statistics: {} // 总数据
       },
       displayRange: 7,
-      line: null,
-      pie: null
+      line: {
+        labels: [],
+        datasets: []
+      },
+      pie: {
+        labels: [],
+        datasets: []
+      }
     }
   },
   created () {
@@ -220,7 +240,6 @@ export default {
       var that = this
       return new Promise((resolve, reject) => {
         getDashboardLine({ day: this.displayRange }).then(res => {
-          console.log(res)
           var line = res.data['line']
           var pie = res.data['pie']
           var lineDate = []
@@ -229,10 +248,12 @@ export default {
           var lineTotal = []
 
           line.forEach(v => {
-            lineDate.push(v['list'][0]['ref_date'])
-            linepv.push(v['list'][0]['share_pv'])
-            lineuv.push(v['list'][0]['share_uv'])
-            lineTotal.push(v['list'][0]['visit_total'])
+            if (!v['errcode']) {
+              lineDate.push(v['list'][0]['ref_date'])
+              linepv.push(v['list'][0]['share_pv'])
+              lineuv.push(v['list'][0]['share_uv'])
+              lineTotal.push(v['list'][0]['visit_total'])
+            }
           })
           that.line = {
             labels: lineDate.reverse(),
@@ -259,19 +280,21 @@ export default {
           }
           var pieData = [0, 0, 0]
           pie.forEach(v => {
-            v['list'].forEach(list => {
-              switch (list['page_path']) {
-                case 'pages/index/index':
-                  pieData[0] += list['page_visit_pv']
-                  break
-                case 'pages/idle/index':
-                  pieData[1] += list['page_visit_pv']
-                  break
-                case 'pages/team/index':
-                  pieData[2] += list['page_visit_pv']
-                  break
-              }
-            })
+            if (!v['errcode']) {
+              v['list'].forEach(list => {
+                switch (list['page_path']) {
+                  case 'pages/index/index':
+                    pieData[0] += list['page_visit_pv']
+                    break
+                  case 'pages/idle/index':
+                    pieData[1] += list['page_visit_pv']
+                    break
+                  case 'pages/team/index':
+                    pieData[2] += list['page_visit_pv']
+                    break
+                }
+              })
+            }
           })
           that.pie = {
             labels: ['主頁', '二手闲置', '比赛'],

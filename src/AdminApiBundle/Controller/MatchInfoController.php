@@ -192,23 +192,61 @@ class MatchInfoController extends AbstractApiController
         }
         $matchApplications = $em->getRepository('CommonBundle:MatchApplication')->findBy(['MatchInfo' => $params['id'], 'isSponsor' => true]);
 
-        $cols = ['团队名', '队长'];
-        $data = [];
+        $cols = [
+            '队伍' => ['ID', '队伍名称', '项目现状', '人数', '要求', '加入队伍截止时间'],
+            '队员' => ['队伍ID', '队伍名称', '姓名', '性别', '学号', '学院', '专业', '手机号', '拥有技能', '比赛经验', '联系方式']
+        ];
+        $data = [
+            '队伍' => [],
+            '队员' => []
+        ];
         foreach ($matchApplications as $matchApplication) {
+            // 队伍
+            array_push($data['队伍'], [
+                'id' => $matchApplication->getId(),
+                'title' => $matchApplication->getTeamName(),
+                'status' => $matchApplication->getCurrentStatus(),
+                'people' => $matchApplication->getPeople(),
+                'kill' => $matchApplication->getSkill() ? $matchApplication->getSkill() : '-',
+                'joinAt' => $matchApplication->getJoinEndAt()->format('Y-m-d')
+            ]);
             $profile = $matchApplication->getProfile();
-            $d = [$matchApplication->getTeamName(), $profile->getName() . "（{$profile->getMobile()}）"];
+            array_push($data['队员'], [
+                "id" => $matchApplication->getId(),
+                'title' => $matchApplication->getTeamName(),
+                'name' => $profile->getName(),
+                'gender' => $profile->getGender() == 'M' ? '男' : '女',
+                'sNo' => $profile->getSNo(),
+                'college' => $profile->getCollege()->getTitle(),
+                'professional' => $profile->getProfessional()->getTitle(),
+                'mobile' => $profile->getMobile(),
+                'kills' => $matchApplication->getSkills() ? $matchApplication->getSkills() : '-',
+                'experience' => $matchApplication->getMatchExperience(),
+                'contact' => $matchApplication->getContact()
+            ]);
             /** @var MatchApplication $value */
             foreach ($matchApplication->getChildren()->getValues() as $value) {
-                array_push($d, $value->getProfile()->getName() . "（{$value->getContact()}）");
+                $cProfile = $value->getProfile();
+                array_push($data['队员'], [
+                    "id" => $matchApplication->getId(),
+                    'title' => $matchApplication->getTeamName(),
+                    'name' => $cProfile->getName(),
+                    'gender' => $cProfile->getGender() == 'M' ? '男' : '女',
+                    'sNo' => $cProfile->getSNo(),
+                    'college' => $cProfile->getCollege()->getTitle(),
+                    'professional' => $cProfile->getProfessional()->getTitle(),
+                    'mobile' => $cProfile->getMobile(),
+                    'kills' => $value->getSkills() ? $value->getSkills() : '-',
+                    'experience' => $value->getMatchExperience() ? $value->getMatchExperience() : '-',
+                    'contact' => $value->getContact() ? $value->getContact() : '-'
+                ]);
             }
-
-            array_push($data, $d);
         }
 
         $excelHelper = new ExcelHelper();
 
         return self::createSuccessJSONResponse('success', [
-            'url' => $this->getParameter('api_domain') . '/' . $excelHelper->exportExcel($cols, $data, $matchInfo->getTitle() . "人员表")
+            'url' => $this->getParameter('api_domain') . '/' . $excelHelper->exportMatchApplication($cols, $data, $matchInfo->getTitle() . "人员表")
         ]);
     }
 }
