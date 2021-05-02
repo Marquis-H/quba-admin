@@ -54,4 +54,24 @@ class IdleProfileRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+
+    /**
+     * @param $id
+     * @param $profile
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByApplicationProfile($id, $profile)
+    {
+        return $this->createQueryBuilder('q')
+            ->leftJoin('q.IdleApplication', 'a')
+            ->where('a.Profile = :profile')
+            ->andWhere('q.id = :id')
+            ->setParameters([
+                'profile' => $profile,
+                'id' => $id
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

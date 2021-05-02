@@ -201,7 +201,7 @@ class IdleController extends AbstractApiController
             $idleProfile->setIdleApplication($idleApplication);
             $idleProfile->setTradeAt(new \DateTime());
             $idleProfile->setReceipt($idleApplicationService->buildOrderReceiptNumber($idleApplication->getId()));
-           // $idleApplication->setStatus(IdleStatus::Doing);
+           // $idleApplication->setStatus(IdleStatus::Doing); // 发起交易不修改状态
 
             $em->persist($idleApplication);
             $em->persist($idleProfile);
@@ -236,7 +236,7 @@ class IdleController extends AbstractApiController
 
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['id' => $params['id'], 'Profile' => $profile]);
+        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findByApplicationProfile($params['id'], $profile);
         if ($idleProfile == null) {
             throw new ApiException('记录不存在', ApiCode::DATA_NOT_FOUND);
         }
@@ -245,13 +245,11 @@ class IdleController extends AbstractApiController
             $idleProfile->setStatus($params['status']);
             /** @var IdleApplication $idleApplication */
             $idleApplication = $idleProfile->getIdleApplication();
-            if ($idleApplication->getStatus() == IdleStatus::Doing) {
-                switch ($params['status']) {
+            if ($idleApplication->getStatus() == IdleStatus::ONLINE) {// 上线状态
+                switch ($params['status']) { // “取消交易” “交易完成” 改为下架
                     case TradeStatus::Done:
-                        $idleApplication->setStatus(IdleStatus::OFFLINE);
-                        break;
                     case TradeStatus::Cancel:
-                        $idleApplication->setStatus(IdleStatus::ONLINE);
+                        $idleApplication->setStatus(IdleStatus::OFFLINE);
                         break;
                 }
             }
