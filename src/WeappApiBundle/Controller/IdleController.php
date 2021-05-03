@@ -246,9 +246,9 @@ class IdleController extends AbstractApiController
             /** @var IdleApplication $idleApplication */
             $idleApplication = $idleProfile->getIdleApplication();
             if ($idleApplication->getStatus() == IdleStatus::ONLINE) {// 上线状态
-                switch ($params['status']) { // “取消交易” “交易完成” 改为下架
+                switch ($params['status']) { // “交易完成” 改为下架
                     case TradeStatus::Done:
-                    case TradeStatus::Cancel:
+//                    case TradeStatus::Cancel:
                         $idleApplication->setStatus(IdleStatus::OFFLINE);
                         break;
                 }
