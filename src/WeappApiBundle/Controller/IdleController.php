@@ -112,7 +112,7 @@ class IdleController extends AbstractApiController
         }
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();
-        CommonTools::checkParams($params, ['name', 'category', 'number', 'originalCost', 'currentCost', 'contactType', 'contact', 'description']);
+        CommonTools::checkParams($params, ['name', 'category', 'number', 'originalCost', 'currentCost', 'contactType', 'contact']);
 
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.default_entity_manager');

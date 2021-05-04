@@ -12,6 +12,7 @@ CommonBundle\Entity\IdleApplication:
             type: string
         description:
             type: text
+            nullable: true
         status:
             type: string
         oldDeep:
