@@ -87,7 +87,7 @@ class IdleController extends AbstractApiController
         $idleApplication = $em->getRepository("CommonBundle:IdleApplication")->find($params['id']);
         $data = $commonService->toDataModel($idleApplication);
 
-        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['IdleApplication' => $idleApplication, 'Profile' => $profile]);
+        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['IdleApplication' => $idleApplication, 'Profile' => $profile], ['createdAt' => 'desc']);
         $data['idleRecord'] = $commonService->toDataModel($idleProfile);
         return self::createSuccessJSONResponse('success', $data);
     }
