@@ -8,6 +8,9 @@ CommonBundle\Entity\MatchInfo:
             generator:
                 strategy: AUTO
     fields:
+        cover:
+            type: array
+            nullable: true
         title:
             type: string
         tabs:

@@ -3,8 +3,15 @@
     <div style="padding-bottom: 8px">
       <div v-for="(file, index) in inputVal" :key="index">
         <template v-if="Number(file.progress) == 100">
-          <a :href="$store.getters.setting.domain+file.response.data.file" target="_blank">查看文件</a>
-          <i @click.prevent="$refs.upload.remove(file)" class="fa fa-minus-square pl-2 text-danger"></i>
+          <a
+            :href="$store.getters.setting.domain + file.response.data.file"
+            target="_blank"
+            >查看文件</a
+          >
+          <i
+            @click.prevent="$refs.upload.remove(file)"
+            class="fa fa-minus-square pl-2 text-danger"
+          ></i>
         </template>
         <template v-else>
           <b-progress :value="Number(file.progress)" height="0.75rem" />
@@ -27,7 +34,7 @@
       <span v-if="inputVal.length == 0">选择文件</span>
       <span v-else>添加文件</span>
     </file-upload>
-    <div class="tips">支持上传文件：{{accept}}</div>
+    <div class="tips">支持上传文件：{{ accept }}</div>
   </div>
 </template>
 

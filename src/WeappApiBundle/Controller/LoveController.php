@@ -56,7 +56,7 @@ class LoveController extends AbstractApiController
         $profile = $user->getWeappUserProfile();
         $params = $request->request->all();
         $accessor = PropertyAccess::createPropertyAccessor();
-        CommonTools::checkParams($params, ['nickname', 'name', 'taName', 'content']);
+        CommonTools::checkParams($params, ['name', 'content']);
 
         $em = $this->get('doctrine.orm.default_entity_manager');
         $love = new SayLoveMessage();
@@ -71,9 +71,9 @@ class LoveController extends AbstractApiController
             }
             $love->setSelfNickname($params['nickname']);
             $love->setSelfName($params['name']);
-            $love->setSelfGender($accessor->getValue($params, "[gender]"));
+//            $love->setSelfGender($accessor->getValue($params, "[gender]"));
             $love->setSheName($params['taName']);
-            $love->setSheGender($accessor->getValue($params, "[taGender]"));
+//            $love->setSheGender($accessor->getValue($params, "[taGender]"));
             $love->setContent($params['content']);
             $love->setProfile($profile);
             $em->persist($love);

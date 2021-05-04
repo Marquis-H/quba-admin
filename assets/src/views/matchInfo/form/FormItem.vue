@@ -19,6 +19,7 @@
       :type="item.type"
       :accept="item.accept"
       :extensions="item.extensions"
+      :name="name"
       @onchage="onChage"
     />
   </b-form-group>

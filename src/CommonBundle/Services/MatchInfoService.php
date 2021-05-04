@@ -22,6 +22,7 @@ class MatchInfoService extends AbstractService
         unset($data['id']);
         $em->getConnection()->beginTransaction();
         try {
+            $entity->setCover(count($data['cover']) > 0 ? $data['cover'][0]["response"] : []);
             $entity->setTitle($data['title']);
             $entity->setEndAt(new \DateTime($data['endAt']));
             $entity->setFiles($data['files']);

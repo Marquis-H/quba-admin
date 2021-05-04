@@ -186,6 +186,7 @@ class CommonService extends AbstractService
                     $output = [
                         'id' => $obj->getId(),
                         'title' => $obj->getTitle(),
+                        'cover' => $obj->getCover(),
                         'tabs' => $obj->getTabs(),
                         'endAt' => $obj->getEndAt() ? $obj->getEndAt()->format('Y-m-d') : null,
                         'peopleLimit' => $obj->getPeopleLimit(),

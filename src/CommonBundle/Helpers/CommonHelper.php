@@ -162,6 +162,7 @@ class CommonHelper
             } elseif ($obj instanceof MatchInfo) {
                 $output = [
                     'id' => $obj->getid(),
+                    'cover' => $obj->getCover(),
                     'title' => $obj->getTitle(),
                     'tabs' => $obj->getTabs(),
                     'endAt' => $obj->getEndAt()->format('Y-m-d H:i'),

@@ -4,6 +4,7 @@ import { invalid } from './Validator'
 import store from '../../../store'
 
 export const formData = {
+    cover: [],
     title: '',
     onlineOffline: null, // 线上、线下
     type: null, // 级别
@@ -18,6 +19,15 @@ export const formData = {
 export const formItem = (options) => {
     let newOptions = JSON.parse(JSON.stringify(options))
     return {
+        cover: {
+            label: '封面',
+            component: 'SingleUploadFile',
+            state: false,
+            required: false,
+            accept: 'image/png, image/gif, image/jpeg',
+            extensions: 'gif,jpg,jpeg,png',
+            action: store.getters.setting.domain + '/api/v1/admin/upload/image?name=cover'
+        },
         title: {
             label: '名称',
             placeholder: '请填写名称',
@@ -76,7 +86,7 @@ export const formItem = (options) => {
             required: false,
             accept: 'image/png, image/gif, image/jpeg, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             extensions: 'gif,jpg,jpeg,png,pdf,doc,docx',
-            action: store.getters.setting.domain + '/api/v1/admin/upload/image'
+            action: store.getters.setting.domain + '/api/v1/admin/upload/image?name=files'
         },
         urls: {
             label: '链接（请使用,将链接隔开）',

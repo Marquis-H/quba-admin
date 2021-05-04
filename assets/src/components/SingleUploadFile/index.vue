@@ -1,6 +1,7 @@
 <template>
   <div :style="styles">
     <file-upload
+      :name="name"
       :class="componentClass"
       :post-action="action"
       :extensions="extensions"
@@ -65,6 +66,10 @@ export default {
     value: {
       type: Array,
       required: true
+    },
+    name: {
+      type: String,
+      default: 'file'
     }
   },
   components: {

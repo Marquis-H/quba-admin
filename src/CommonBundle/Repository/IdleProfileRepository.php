@@ -65,7 +65,7 @@ class IdleProfileRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder('q')
             ->leftJoin('q.IdleApplication', 'a')
-            ->where('a.Profile = :profile')
+            ->where('a.Profile = :profile or q.Profile = :profile')
             ->andWhere('q.id = :id')
             ->setParameters([
                 'profile' => $profile,

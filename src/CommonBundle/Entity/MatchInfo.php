@@ -13,6 +13,11 @@ class MatchInfo
     private $id;
 
     /**
+     * @var array|null
+     */
+    private $cover = [];
+
+    /**
      * @var string
      */
     private $title;
@@ -388,5 +393,29 @@ class MatchInfo
     public function getTopAt()
     {
         return $this->topAt;
+    }
+
+    /**
+     * Set cover.
+     *
+     * @param array|null $cover
+     *
+     * @return MatchInfo
+     */
+    public function setCover($cover = null)
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
+
+    /**
+     * Get cover.
+     *
+     * @return array|null
+     */
+    public function getCover()
+    {
+        return $this->cover;
     }
 }

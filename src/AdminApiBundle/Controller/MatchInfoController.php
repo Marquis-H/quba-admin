@@ -50,13 +50,22 @@ class MatchInfoController extends AbstractApiController
         $data = $request->request->all();
         $validator = $this->get('validator');
         $collectionConstraint = new Collection([
-            'title' => []
+            'cover' => [],
+            'title' => [],
+            'onlineOffline' => [],
+            'type' => [],
+            'tabs' => [],
+            'endAt' => [],
+            'peopleLimit' => [],
+            'qualificationLimit' => [],
+            'files' => [],
+            'urls' => []
         ]);
 
         $errors = $validator->validate($data, $collectionConstraint);
 
         if (count($errors) > 0) {
-            return self::createFailureJSONResponse('fail', 100, $this->getErrors($errors));
+            return self::createFailureJSONResponse(100, 'fail', $this->getErrors($errors));
         } else {
             $matchInfoService = $this->get(MatchInfoService::class);
             try {
@@ -90,9 +99,21 @@ class MatchInfoController extends AbstractApiController
         $data = $request->request->all();
         $validator = $this->get('validator');
         unset($data['createdAt']);
+        unset($data['applications']);
+        unset($data['topAt']);
 
         $collectionConstraint = new Collection([
-            'id' => []
+            'id' => [],
+            'cover' => [],
+            'title' => [],
+            'onlineOffline' => [],
+            'type' => [],
+            'tabs' => [],
+            'endAt' => [],
+            'peopleLimit' => [],
+            'qualificationLimit' => [],
+            'files' => [],
+            'urls' => []
         ]);
 
         $errors = $validator->validate($data, $collectionConstraint);
@@ -111,7 +132,7 @@ class MatchInfoController extends AbstractApiController
                 $data['id'] = $matchInfo->getId();
                 $data['createdAt'] = $matchInfo->getCreatedAt()->format('Y-m-d H:i');
             } catch (\Exception $e) {
-                return self::createFailureJSONResponse(-1, 'fail');
+                return self::createFailureJSONResponse(-1, $e->getMessage());
             }
         }
 

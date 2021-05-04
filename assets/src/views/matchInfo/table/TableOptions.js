@@ -24,6 +24,12 @@ export const fields = () => {
             tdClass: 'align-middle'
         },
         {
+            label: '封面',
+            key: 'cover',
+            sortable: true,
+            tdClass: 'align-middle'
+        },
+        {
             label: '名称',
             key: 'title',
             sortable: true,

@@ -56,7 +56,7 @@ class UploadController extends AbstractApiController
 
             if (!$fs->exists($uploadDir))
                 $fs->mkdir($uploadDir);
-            $uploader = new UploadHelper('file');
+            $uploader = new UploadHelper($this->get('request_stack')->getCurrentRequest()->query->get('name', 'file'));
             $uploader->allowedExtensions = explode('|', $extensions);
             $oldName = str_replace('.' . $uploader->getExtension(), '', $uploader->getFileName());
             $uploader->newFileName = sprintf('%s.%s',

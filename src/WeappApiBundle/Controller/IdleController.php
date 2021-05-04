@@ -68,17 +68,28 @@ class IdleController extends AbstractApiController
      * @param Request $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws WeappApiException
      */
     public function idleDetail(Request $request)
     {
         $params = $request->query->all();
         CommonTools::checkParams($params, ['id']); // Application ID
         $commonService = $this->container->get(CommonService::class);
+        /** @var WeappUser $user */
+        $user = $this->getUser();
+        $profile = $user->getWeappUserProfile();
 
+        if (!$profile) {
+            throw new WeappApiException('please finish your profile first', ApiCode::PROFILE_NOT_FOUND);
+        }
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $idleApplication = $em->getRepository("CommonBundle:IdleApplication")->find($params['id']);
-        return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplication));
+        $data = $commonService->toDataModel($idleApplication);
+
+        $idleProfile = $em->getRepository('CommonBundle:IdleProfile')->findOneBy(['IdleApplication' => $idleApplication, 'Profile' => $profile]);
+        $data['idleRecord'] = $commonService->toDataModel($idleProfile);
+        return self::createSuccessJSONResponse('success', $data);
     }
 
     /**
@@ -201,7 +212,7 @@ class IdleController extends AbstractApiController
             $idleProfile->setIdleApplication($idleApplication);
             $idleProfile->setTradeAt(new \DateTime());
             $idleProfile->setReceipt($idleApplicationService->buildOrderReceiptNumber($idleApplication->getId()));
-           // $idleApplication->setStatus(IdleStatus::Doing); // 发起交易不修改状态
+            // $idleApplication->setStatus(IdleStatus::Doing); // 发起交易不修改状态
 
             $em->persist($idleApplication);
             $em->persist($idleProfile);
@@ -220,6 +231,7 @@ class IdleController extends AbstractApiController
      * @param Request $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function changeTrade(Request $request)
     {
@@ -311,7 +323,8 @@ class IdleController extends AbstractApiController
      * @return JsonResponse
      * @throws ApiException
      */
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $params = $request->query->all();
         CommonTools::checkParams($params, ['cId', 'keyword', 'currentSortOrder']); // 類別ID
         $commonService = $this->container->get(CommonService::class);

@@ -31,6 +31,14 @@
         >
       </span>
     </template>
+    <template slot="cover" slot-scope="data">
+      <img
+        v-if="data.item.cover.data"
+        width="60"
+        :src="$store.getters.setting.domain + data.item.cover.data.file"
+      />
+      <span v-else>-</span>
+    </template>
     <template slot="tabs" slot-scope="data">
       <span>{{ data.item.tabs | getText("tabs", options, category) }}</span>
     </template>

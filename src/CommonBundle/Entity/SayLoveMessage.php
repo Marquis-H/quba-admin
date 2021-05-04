@@ -25,7 +25,7 @@ class SayLoveMessage
     /**
      * @var string
      */
-    private $selfGender;
+    private $selfGender = 'M';
 
     /**
      * @var string
@@ -35,7 +35,7 @@ class SayLoveMessage
     /**
      * @var string
      */
-    private $sheGender;
+    private $sheGender = 'M';
 
     /**
      * @var string
