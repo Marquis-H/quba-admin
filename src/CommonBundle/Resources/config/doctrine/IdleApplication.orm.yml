@@ -2,6 +2,11 @@ CommonBundle\Entity\IdleApplication:
     type: entity
     table: weapp_idle_application
     repositoryClass: CommonBundle\Repository\IdleApplicationRepository
+    indexes:
+        status_idx:
+            columns: [ status ]
+        category_idx:
+            columns: [ weapp_idle_category ]
     id:
         id:
             type: integer

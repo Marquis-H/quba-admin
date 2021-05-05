@@ -52,6 +52,11 @@ liip_imagine:
             web_path:
                 web_root: "%kernel.project_dir%/web"
                 cache_prefix: "uploads/cache"
+    filter_sets:
+        cache: ~
+        widen240:
+            filters:
+                relative_resize: { widen: 240 }
 
 lexik_jwt_authentication:
     private_key_path: '%kernel.project_dir%/%JWT_PRIVATE_KEY_PATH%'
