@@ -9,6 +9,7 @@ use CommonBundle\Entity\IdleApplication;
 use CommonBundle\Entity\IdleProfile;
 use CommonBundle\Entity\WeappUser;
 use CommonBundle\Exception\ApiException;
+use CommonBundle\Helpers\CommonRedis;
 use CommonBundle\Helpers\CommonTools;
 use CommonBundle\Services\CommonService;
 use CommonBundle\Services\IdleApplicationService;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
+use Util\Json;
 use WeappApiBundle\Annotation\Anonymous;
 use WeappApiBundle\Constants\ApiCode;
 use WeappApiBundle\Exceptions\WeappApiException;
@@ -29,13 +31,19 @@ class IdleController extends AbstractApiController
      * @Anonymous()
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function idleCategory(Request $request)
     {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $redis = new CommonRedis();
+        if ($redis->exist('idle_category')) {
+            return self::createSuccessJSONResponse('success', Json::decode($redis->fetch("idle_category"), true));
+        }
         $idleCategory = $em->getRepository('CommonBundle:IdleCategory')->findAll();
         $commonService = $this->container->get(CommonService::class);
-
+        // 緩存
+        $redis->set("idle_category", Json::encode($commonService->toDataModel($idleCategory)));
         return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleCategory));
     }
 
@@ -52,11 +60,15 @@ class IdleController extends AbstractApiController
         $params = $request->query->all();
         CommonTools::checkParams($params, ['cId']); // 類別ID
         $commonService = $this->container->get(CommonService::class);
-
+        $redis = new CommonRedis();
+        if ($redis->exist('idle_list_' . $params['cId'])) {
+            return self::createSuccessJSONResponse('success', Json::decode($redis->fetch('idle_list_' . $params['cId']), true));
+        }
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $idleApplications = $em->getRepository('CommonBundle:IdleApplication')->findByCategory($params['cId']);
-
+        // 緩存
+        $redis->set('idle_list_' . $params['cId'], Json::encode($commonService->toDataModel($idleApplications)));
         return self::createSuccessJSONResponse('success', $commonService->toDataModel($idleApplications));
     }
 
@@ -138,6 +150,8 @@ class IdleController extends AbstractApiController
             $em->persist($idle);
             $em->flush();
 
+            $redis = new CommonRedis();
+            $redis->remove($redis->keys("idle_list_*"));
             return $this->createSuccessJSONResponse('success');
         } catch (\Exception $e) {
             return $this->createFailureJSONResponse(-1, $e->getMessage());
@@ -261,6 +275,8 @@ class IdleController extends AbstractApiController
                 switch ($params['status']) { // “交易完成” 改为下架
                     case TradeStatus::Done:
 //                    case TradeStatus::Cancel:
+                        $redis = new CommonRedis();
+                        $redis->remove($redis->keys("idle_list_*"));
                         $idleApplication->setStatus(IdleStatus::OFFLINE);
                         break;
                 }
@@ -313,6 +329,8 @@ class IdleController extends AbstractApiController
             return $this->createFailureJSONResponse(-1, $e->getMessage());
         }
 
+        $redis = new CommonRedis();
+        $redis->remove($redis->keys("idle_list_*"));
         return $this->createSuccessJSONResponse('success');
     }
 

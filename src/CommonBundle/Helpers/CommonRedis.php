@@ -21,7 +21,7 @@ class CommonRedis
      * @param float $timeout
      * @throws \Exception
      */
-    public function __construct($host, $port = 6379, $authPwd = null, $timeout = 0.0)
+    public function __construct($host = "127.0.0.1", $port = 6379, $authPwd = null, $timeout = 0.0)
     {
         $this->client = new Redis();
         try {
@@ -40,6 +40,14 @@ class CommonRedis
     public function fetch($key)
     {
         return $this->client->get($key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function keys($key)
+    {
+        return $this->client->keys($key);
     }
 
     /**

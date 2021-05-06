@@ -7,6 +7,7 @@ namespace AdminApiBundle\Controller;
 use CommonBundle\Entity\IdleCategory;
 use CommonBundle\Exception\ApiException;
 use CommonBundle\Helpers\CommonHelper;
+use CommonBundle\Helpers\CommonRedis;
 use CommonBundle\Services\IdleCategoryService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,6 +63,7 @@ class IdleCategoryController extends AbstractApiController
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function create(Request $request)
     {
@@ -93,7 +95,8 @@ class IdleCategoryController extends AbstractApiController
                 return self::createFailureJSONResponse('fail');
             }
         }
-
+        $redis = new CommonRedis();
+        $redis->remove("idle_category");
         return self::createSuccessJSONResponse('success', $data);
     }
 
@@ -103,6 +106,7 @@ class IdleCategoryController extends AbstractApiController
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws \Exception
      */
     public function update(Request $request, $id)
     {
@@ -142,7 +146,8 @@ class IdleCategoryController extends AbstractApiController
                 return self::createFailureJSONResponse(-1, 'fail');
             }
         }
-
+        $redis = new CommonRedis();
+        $redis->remove("idle_category");
         return $this->createSuccessJSONResponse('success', $data);
     }
 
@@ -152,6 +157,7 @@ class IdleCategoryController extends AbstractApiController
      *
      * @param $id
      * @return JsonResponse
+     * @throws \Exception
      */
     public function delete($id)
     {
@@ -168,7 +174,8 @@ class IdleCategoryController extends AbstractApiController
         } catch (\Exception $e) {
             $em->rollback();
         }
-
+        $redis = new CommonRedis();
+        $redis->remove("idle_category");
         return self::createSuccessJSONResponse('success', []);
     }
 }
